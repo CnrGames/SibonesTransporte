@@ -1,0 +1,133 @@
+
+#xbutton
+{
+  margin-left: 92%;
+  margin-top: -1%;
+   position:absolute;
+}
+
+.pasta
+{
+  background-color: aqua;
+  height: 300px;
+  width: 600px;
+
+  position:absolute;
+  display: flex;
+  flex-direction: column;
+
+ transform: translate(10%,0%);
+ border-radius: 5px;
+}
+
+/*------------------------Pesquisa   */
+
+.psqArea
+{
+  display: flex;
+  outline-style: solid;
+  flex-direction:row;
+
+  padding: 10px;
+  justify-content: center;
+}
+
+.escolha:hover
+{
+  background-color: red;
+}
+
+
+/* -----------------------Pesquisa-------  */
+
+/* -----------------------Item-------  */
+
+.item-cont
+{
+  outline-color:rgb(255, 0, 0);
+  outline-style: solid;
+  width: 400px;
+
+
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  
+  height: 300px;
+  overflow:auto;
+  align-self: center;
+
+}
+.divisao
+{
+  padding-left: 10px;
+ 
+
+}
+.itemB
+{
+
+  background-color: rgb(43, 43, 43);
+  height: 35px;
+  font-size: 11px;
+
+   border-bottom: 2px;
+   border-bottom-style: solid;
+   padding-left: 5px;
+}
+
+.itemB:hover
+{
+
+  background-color: rgb(128, 237, 128);
+
+}
+/* -----------------------Item-------  */
+
+body
+{
+  background-color: rgb(142, 129, 114);
+}
+
+.dropbtn {
+
+  width: 40px;
+
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.iNome
+{
+ 
+  color: white;
+  font-size: 12px;
+  font-weight: bolder;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown:hover .dropbtn {
+  background-color: #3e8e41;
+}

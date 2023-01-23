@@ -1,0 +1,23 @@
+
+
+let viagem = 
+{
+    
+   datas: "12/12/12",
+   destino "nampula",
+   hora_partida : 12,
+   duracao: 12,
+   autocarro: "bimas",
+   lotacao:12,
+   valor: 50,
+   b_restante:2
+
+}
+
+let User = 
+{
+    "nome": "sibone",
+    "role":"user",
+    "pass":"123"
+
+}

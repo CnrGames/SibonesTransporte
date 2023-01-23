@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="./media/dados.css" rel="stylesheet" />
+</head>
+<body>
+
+
+
+  
+
+
+
+
+  <!-- COntainner-->
+
+  <div class="pasta">
+
+  <!-- Pesquisa!-->
+     <div class="psqArea">
+
+    <input id="pesquisa" type="search">
+    
+     <!--Dia-->
+    <div class="dropdown">
+      <input id="diaB" class="dropbtn" placeholder="Dia"></input>
+    </div>
+     <!-- Mes-->
+    <div class="dropdown">
+      <input id="mesB" class="dropbtn" placeholder="Mes"></input>
+      <div class="dropdown-content">
+      <a >1</a>
+      <a >2</a>
+      <a >3</a>
+      </div>
+    </div>
+     <!-- Ano-->
+    <div class="dropdown">
+      <input id="anoB" class="dropbtn" placeholder="Ano"></input>
+    </div>
+    <!-- Tipo-->
+    <div class="dropdown">
+      <input id="docB" class="dropbtn" placeholder="Tipo"></input>
+      <div class="dropdown-content">
+      <a class="escolha">Relatorio</a>
+      <a class="escolha">Pendencia</a>
+      <a class="escolha">Pagamento</a>
+      </div>
+    </div>
+    
+    <button onclick="reservar()"> Pesquisar</button>
+    
+    <button id="xbutton" > X</button>
+
+     </div>
+
+
+   <!-- Lista de resul-->
+   <div class="item-cont"> 
+
+<!--
+viagens (datas,destino,hora_partida,duracao,
+tipo de autocarro e lotacao)
+-->
+
+
+
+        <div class="itemB">
+        
+          <div class="divisao">
+            <a class="iNome">DESTINO: pemba</a>
+            <a class="iNome"> HORA: 10</a>
+          </div>
+          <div class="divisao">
+            <a class="iNome"> DURACAO:10hrs</a>
+            <a class="iNome">AUTOCARRO: Kombi</a>
+            <a class="iNome">LOT:15</a>
+            <button onclick="ola()">comprar</button>
+          </div>
+         
+        </div>
+      
+    </div>
+
+  </div>
+
+
+
+<script src="./media/calend.js"></script>
+<script src="./media/RegistoFront/userReservar.js"></script>
+
+</body>
+</html>
+
+

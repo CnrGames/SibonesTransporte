@@ -1,0 +1,41 @@
+.pai {
+    position: absolute;
+    height: 400px;
+    width: 600px;
+
+
+
+    transform: translate(50%, -120%);
+    gap: 100px;
+    padding-top: 100px;
+
+
+    display: none;
+
+
+
+
+
+}
+
+.dt {
+    width: 130px;
+}
+
+.cont {
+
+
+    background-color: aqua;
+
+    outline-style: solid;
+    outline-color: black;
+
+    height: 90%;
+    width: 300px;
+
+    margin-left: 100px;
+    padding-left: 70px;
+
+    gap: 100px;
+
+}

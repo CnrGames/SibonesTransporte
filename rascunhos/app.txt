@@ -1,0 +1,414 @@
+const { json } = require("express");
+const ex = require("express");
+const { ObjectId } = require("mongodb");
+const { connectToDb, getDb } = require("./db");
+
+const bc = require("body-parser");
+const { check, validationResult } = require("express-validator");
+const { urlencoded } = require("body-parser");
+const bodyParser = require("body-parser");
+
+const login_R = require('./rotas/user_login');
+const ucd = bodyParser.urlencoded({ extended: false });
+const az = ex();
+
+az.use(ex.json());
+az.set("view engine", "ejs");
+az.use(ex.static("negotium"));
+az.use(ex.static("negotium_beta"));
+az.use(getNomes);
+az.use(ex.static("seacrhF"));
+//Admin
+az.use(ex.static("./nego-fich/admin"));
+//User
+az.use(ex.static("./nego-fich/user"));
+//Login
+az.use(ex.static("./nego-fich/login"));
+//Usuarios
+
+//az.use(require("./rotas/sub"));
+
+// db connection
+let db;
+let ddb;
+connectToDb((err) => {
+  if (!err) {
+    az.listen(3000, (req, res) => {
+      console.log("Fecthing db....");
+    });
+    db = getDb();
+    ddb = getDb();
+  }
+});
+
+let nome
+///Paginas Final
+let userId ="";
+
+az.use(login_R);
+
+
+function getNomes(req,res,next)
+{
+      
+  
+  console.log("Checando: "+req.cnr);
+  //console.log(req.cnr+"oi");
+  next();
+  return
+}
+
+// az.get("/login",ucd, (req, res) => {
+//   let lta = [];
+//   req.naruto = 'Sasuke';
+
+//   db.collection("comp")
+//     .find()
+//     .sort({ nome: 1 })
+//     .forEach((cs) => lta.push(cs))
+//     .then(() => {
+//       //----------------------------------------------
+//       res.render("login", {
+//         natax: lta,
+//         nataxo: req.naruto
+//       });
+
+//       res.status(200);
+//     })
+
+//     .catch(() => {
+//       res.status(500).json({ err: "could not fetch Data" });
+//     });
+
+// });
+
+// az.post("/login",ucd,getNomes,(req,res)=>
+// {
+//    req.cnr = req.body.user; 
+//    console.log("--------------Cnr_aqui--------------");
+//    console.log(req.body.user);
+//    console.log(req.cnr)
+//    console.log("--------------Final--------------");
+
+//   res.redirect("/user")
+//   //console.log("Rspo: "+req.body)
+// })
+
+//--------------------Usuarios
+az.get("/user", ucd, getNomes,(req, res) => {
+  let lta = [];
+  let docR = [];
+  console.log( req.cnr +" User");
+
+  db.collection("comp")
+    .find()
+    .sort({ nome: 1 })
+    .forEach((cs) => lta.push(cs))
+    .then(() => {
+      //----------------------------------------------
+      res.render("user", {
+        natax: lta,
+        ps: req.body.pesq,
+        ctg: req.body.categ,
+        docs: [],
+        emid: req.body.cdI,
+        emp: req.body.emp,
+      });
+
+      res.status(200);
+    })
+
+    .catch(() => {
+      res.status(500).json({ err: "could not fetch Data" });
+    });
+});
+az.post("/user", ucd, (req, res) => {
+  const emp = req.body;
+
+  let lta = [];
+  let docR = [];
+  if (req.body.pesq == undefined) {
+    req.body.pesq = "";
+  }
+  function pesquisa(n) {
+    if (req.body.pesq == "" && req.body.emp.length <= 0) {
+      console.log("a");
+      return req.body.pesq;
+    } else if (req.body.pesq == "" && req.body.emp.length > 0) {
+      console.log("b");
+
+      return { emp: `${req.body.emp}` };
+    } else if (req.body.pesq != "" && req.body.emp.length > 0) {
+      console.log("c");
+
+      return { tipo: `${req.body.pesq}`, emp: `${req.body.emp}` };
+    } else {
+      console.log("d");
+
+      return { tipo: `${req.body.pesq}` };
+    }
+  }
+  let p = pesquisa(req.body.pesq);
+
+  db.collection("comp")
+    .find()
+    .sort({ nome: 1 })
+    .forEach((cs) => lta.push(cs))
+    .then(() => {
+      return ddb
+        .collection(`${req.body.categ}`)
+        .find(p)
+        .sort({ tipo: 1 })
+        .collation({ locale: "en", caseLevel: true })
+        .forEach((d) => {
+          docR.push(d);
+        });
+    })
+    .then((e) => {
+      res.render("user", {
+        natax: lta,
+        ps: req.body.pesq,
+        ctg: req.body.categ,
+        docs: docR,
+        emp: req.body.emp,
+      });
+
+      //console.log(req.body);
+      //res.send(req.body);
+
+      res.status(200);
+    })
+
+    .catch((e) => {
+      res.status(500).json({ error: "erro", ish: req.body });
+    });
+
+  //console.log("RelaTox:  " + json(req.body));
+
+  // let { nego } = req.body;
+  // console.log(nego);
+});
+
+//-----------------------[Pesquisar]-----------------------
+/*
+az.get("/admin", (req, res) => {
+  res.render("negoAdmin");
+
+  res.status(200);
+});*/
+
+//Pesquisar
+
+az.get("/test", (req, res) => {
+  res.render("up");
+
+  res.status(200);
+});
+
+//Home
+
+az.get("/h", ucd, (req, res) => {
+  let lta = [];
+  let docR = [];
+
+  db.collection("comp")
+    .find()
+    .sort({ nome: 1 })
+    .forEach((cs) => lta.push(cs))
+    .then(() => {
+      //----------------------------------------------
+      res.render("nego", {
+        natax: lta,
+        ps: req.body.pesq,
+        ctg: req.body.categ,
+        docs: [],
+        emp: req.body.emp,
+      });
+
+      res.status(200);
+    })
+
+    .catch(() => {
+      res.status(500).json({ err: "could not fetch Data" });
+    });
+});
+
+//-----------------------[Pesquisar]-----------------------
+
+az.post("/h", ucd, (req, res) => {
+  const emp = req.body;
+
+  let lta = [];
+  let docR = [];
+  console.log("novo:" + req.body.pesq);
+
+  if (
+    req.body.pesq.split(" ").join("").length <= 0 ||
+    req.body.pesq.split(" ").join("") == undefined
+  ) {
+    req.body.pesq = "";
+  }
+  function pesquisa(n) {
+    if (req.body.pesq == "" && req.body.emp.length <= 0) {
+      console.log("a");
+      return req.body.pesq;
+    } else if (req.body.pesq == "" && req.body.emp.length > 0) {
+      console.log("b");
+
+      return { emp: `${req.body.emp}` };
+    } else if (req.body.pesq != "" && req.body.emp.length > 0) {
+      console.log("c");
+
+      return { tipo: `${req.body.pesq}`, emp: `${req.body.emp}` };
+    } else {
+      console.log("d");
+
+      return { tipo: `${req.body.pesq}` };
+    }
+  }
+  let p = pesquisa(req.body.pesq);
+
+  db.collection("comp")
+    .find()
+    .sort({ nome: 1 })
+    .forEach((cs) => lta.push(cs))
+    .then(() => {
+      return ddb
+        .collection(`${req.body.categ}`)
+        .find(p)
+        .sort({ tipo: 1 })
+        .collation({ locale: "en", caseLevel: true })
+        .forEach((d) => docR.push(d));
+    })
+    .then((e) => {
+      // console.log("Relatorio>> " + json());
+      res.render("nego", {
+        natax: lta,
+        ps: req.body.pesq,
+        ctg: req.body.categ,
+        docs: docR,
+        emp: req.body.emp,
+      });
+
+      console.log(req.body);
+      //res.send(req.body);
+
+      res.status(200);
+    })
+
+    .catch((e) => {
+      res.status(500).json(e);
+    });
+
+  //console.log("RelaTox:  " + json(req.body));
+
+  // let { nego } = req.body;
+  // console.log(nego);
+});
+
+//Get varios
+
+az.get("/add/nego", (req, res) => {
+  az.render("register");
+  // let { nego } = req.body;
+  // console.log(nego);
+});
+az.post("/add/nego", ucd, (req, res) => {
+  const emp = req.body;
+
+  //cnrGames
+  db.collection("comp")
+    .insertOne({
+      nome: `${req.body.nomez}`,
+      nuit: `${req.body.nuitx}`,
+    })
+    .then((resul) => {
+      //res.status(201).json(resul);
+      res.redirect("/admin");
+    })
+    .catch((err) => {
+      res.status(500).json({ erro: "Falha na coneccao!" });
+    });
+
+  // let { nego } = req.body;
+  // console.log(nego);
+});
+
+
+//Files
+
+az.post("/add/doc", ucd, (req, res) => {
+  const emp = req.body;
+console.log(req.body)
+  //cnrGames
+  db.collection(req.body.categ)
+    .insertOne({
+      tipo: `${req.body.titulo}`,
+      status: `${req.body.status}`,
+      emp: `${req.body.emp}`,
+      data: `${req.body.data}`,
+      add:'',
+    })
+    .then((resul) => {
+      //res.status(201).json(resul);
+      res.redirect("/user");
+    })
+    .catch((err) => {
+      res.status(500).json({ erro: "Falha na coneccao!" });
+    });
+
+  // let { nego } = req.body;
+  // console.log(nego);
+});
+//Routas
+
+//Get varios
+az.get("/comps", (req, res) => {
+  let lta = [];
+
+  db.collection("comp")
+    .find()
+    .sort({ nome: 1 })
+    .forEach((cs) => lta.push(cs))
+    .then(() => res.status(200).json(lta))
+
+    .catch(() => {
+      res.status(500).json({ err: "could not fetch Data" });
+    });
+});
+
+//Get one
+az.get("/comps/:id", (req, res) => {
+  db.collection("comp")
+    .findOne({ nome: req.params.id })
+    .then((doc) => res.json(doc))
+    .catch((err) => res.status(500).json({ error: "could not find comp" }));
+});
+
+//Post One
+
+az.post("/comps", (req, res) => {
+  const emp = req.body;
+
+  db.collection("comp")
+    .insertOne(emp)
+    .then((resul) => {
+      res.status(201).json(resul);
+    })
+    .catch((err) => {
+      res.status(500).json({ err: "could not Post" });
+    });
+});
+
+//delete
+
+az.delete("/comps/:id", (req, res) => {
+  db.collection("comp")
+    .deleteOne({ nome: req.params.id })
+    .then((resu) => {
+      res.status(201).json(resu);
+    })
+    .catch((err) => res.status(500).json({ err: "could not delete" }));
+});
+
+//Update

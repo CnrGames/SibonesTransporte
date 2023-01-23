@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="adm_nego.css" />
+    <link rel="stylesheet" href="adm_dados.css" />
+    <title>Sibas Adm</title>
+  </head>
+  <body>
+    <section id="sidebar">
+      <a href="#" class="brand">
+        <i class="bx bxs-smile"></i>
+        <span class="text">Manager</span>
+      </a>
+      <ul class="side-menu top">
+        <li class="active">
+          <a>
+            <div>
+              <!-- 
+            <form action="/add/url" method="post"> 
+              INDICE USUARIOS
+              
+            -->
+            <i class="bx bxs-dashboard"></i>
+            <input style="display:none;" name="pagi" value="em" />
+            <button class="text bts botaox" onclick="pag('users')">Usuarios </button>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a>
+            <div>
+              <!-- 
+            <form action="/add/url" method="post">
+                INDICE ADD BILHETES    
+            -->
+            <i class="bx bxs-shopping-bag-alt"></i>
+            <img id="img" src="add.png" alt="" />
+            <input style="display:none;" name="pagi" value="reg" />
+            <button class="text bts botaox" onclick="pag('reg')">Adicionar Bilhete</button>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a>
+            <div>
+            <!--  <form action="/add/url" method="post"> 
+               INDICE  BILHETES  
+            -->
+            <i class="bx bxs-doughnut-chart"></i>
+            <img id="img" src="processo.png" alt="" />
+            <input style="display:none;" name="pagi" value="doc" />
+            <button type="submit"  class="text bts botaox" onclick="pag('doc')">Todos Bilhetes</button>
+            </div>
+          </a>
+        </li>
+      
+      </ul>
+    </section>
+    <section id="content">
+      <nav>
+        <i class="bx bx-menu"></i>
+      </nav>
+      <main>
+        <ul class="box-info">
+          <li>
+            <i class="bx bxs-calendar-check"></i>
+            <span class="text">
+              <h3>Modo:Administrador</h3>
+              <p>Versao 0.2</p>
+            </span>
+          </li>
+        </ul>
+        <div class="fx">
+          <div class="direita">
+            <div class="table-data">
+              <div class="order">
+                <div class="telas">
+                 
+
+                  <!-- Tela de Usuarios -->
+                  <div id="idUsers" style="display: none">
+                    <div class="head">
+                      <h3>Todos  Usuarios</h3>
+                      <div class="psqArea">
+                        <input  id="Epesq" type="search" />
+
+                        <button onclick="resultar()">Pesquisar</button>
+                      </div>
+                      <i class="bx bx-search"></i>
+                      <i class="bx bx-filter"></i>
+                    </div>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Nome</th>
+                          <th style="margin-left: 200px;">Nuit</th>
+                        </tr>
+                      </thead>
+                      <div></div>
+                    </table>
+                    <div class="pasta">
+                      <!-- Pesquisa!-->
+
+                      <!-- Lista de resultado-->
+                      <div class="item-cont">
+                        <table>
+                          <div>
+                            <tbody id="mesa">
+                            
+                             
+                            </tbody>
+                          </div>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+
+ 
+                   <!-- Tela de registo -->
+                     <div id="idRegist" style="display: block">
+                         <div class="head">
+                           <h3 style="border-bottom-style: solid; 
+                           padding-bottom: 9px;padding-right: 50%; 
+                           border-bottom-width: 3px; ">Registar Viagens</h3>
+                           <i class="bx bx-search"></i>
+                        
+                        
+						</div>
+						
+					<div id="form">
+					 <div style="Display:flex; 
+					    flex-direction: column; gap: 15px; ">
+					   
+                  <div style="padding-left: 10%; padding-bottom: 2%;">
+                       <!-- 
+                        viagens (datas,destino,hora_partida,duracao,
+                        tipo de autocarro e lotacao)
+                       -->
+          
+                       <div class="formRow  styleGap">
+
+                          <div class="formCont" >
+                           <span class="lstyle" style="font-size: 20px;">Datas</span>
+                           <input class="iStyle"  type="date" id ="datasp" name="datasp"  autocomplete="off"/>
+                          </div>
+                      
+                      <p>                    </p>    
+                           <div class="formCont" >
+                               <span class="lstyle" style="font-size: 20px;">Hora de partida</span>
+						                   <input class="iStyle"  type="time" id ="horap" name="horap"   autocomplete="off"/>
+					                </div>
+
+                      </div>
+
+                      <div class="formRow styleGap">
+
+                          <div class="formCont" >
+						                 	<span class="lstyle" style="font-size: 20px;">Destino</span>
+						                 	<input class="iStyle" id="docB"  type="text" id ="destino" name="destino" id="nome"  autocomplete="off"/>
+                                
+                                 <div style="position: relative;width: 0; height: 0;padding-top: 3px; ">
+                                        
+                                      <div class="dropdown-content">
+                                        <a class="dest_esc">Pemba</a>
+                                        <a class="dest_esc">Nampula</a>
+                                        <a class="dest_esc">Maputo</a>
+                                        <a class="dest_esc">Matola</a>
+                                        <a class="dest_esc">Zambeze</a>
+                                      </div> 
+                                        
+                                  </div>
+                               
+                              
+                          </div>
+                       
+                           <div class="formCont" >
+                               <span class="lstyle" style="font-size: 20px;">Duracao</span>
+						                  	<input class="iStyle"  type="number" id ="durac" name="durac"   autocomplete="off"/>
+                           </div>
+                   
+                       </div>
+
+
+                       <div class="formRow styleGap">
+
+                           <div class="formCont" >
+                                <span class="lstyle" style="font-size: 20px;">lotacao</span>
+						                   	<input class="iStyle"  type="number" id="lotac" name="lotac"   autocomplete="off"/>
+					                 </div>
+    
+                           <div class="formCont" >
+					                     <span class="lstyle" style="width: 30px;font-size: 20px;">Autocarro</span>
+					                     <input class="iStyle" type="text" name="autoc" id="autoc"  autocomplete="off" />
+
+                               <div style="position: relative;width: 0; height: 0;padding-top: 3px; ">
+                                        
+                                <div class="dropdown-content">
+                                  <a class="dest_esc">BmW</a>
+                                  <a class="dest_esc">Mark-x</a>
+                                  <a class="dest_esc">Ranger</a>
+                                  <a class="dest_esc">Bimas</a>
+                                  <a class="dest_esc">F15</a>
+                                </div> 
+                                  
+                            </div>
+
+					                  </div>
+
+                        </div>
+
+                  </div>
+
+
+					   <div>
+					    	 <button type="submit" onclick="reg_viagem()" class="btnC">Adicionar</button>
+					   </div>
+            </div> <!-- Form -->
+				   </div>
+
+					            </div>
+
+           
+                 <!-- Tela de bilhete -->
+                  <div id="idDoc" style="display: none">
+                    <div class="head">
+                      <h3>Bilhetes</h3>
+                      <div class="psqArea">
+                        <form onsubmit=" return resp();"  action="/admin" method="post">
+                        <input id="pesquisa"  name ="pesq" type="search" value="<%=ps%>" />
+                          <!--Empresa-->
+                          
+                            <div class="dropdown">
+                              <input id="dpEmp" class="dropbtn" placeholder="Emp" readonly autocomplete="off"></input>
+                              <input id='dpEmp0'name="emp" style="display: none"></input>
+                              <input  id="idPg"name="pg" style="display: none"></input>
+                              <div class="dropdown-content">
+
+                                <!--
+                                     <% for(let x =0;x<natax.length;x++){ %>
+                                       <a class="escolha"> <%=natax[x].nome %></a>
+                                       <% } %>
+                                -->
+                               
+                           
+                              </div>
+                            </div>
+                        <!-- Tipo-->
+                                <div class="dropdown">
+                                  <input name="dcateg" id="docB" class="dropbtn" value="<%= fctg%>" placeholder="Tipo" autocomplete="off" readonly  required></input>
+                                  <div class="dropdown-content">
+                                  <a class="escolha">Relatorio de Contas</a>
+                                  <a class="escolha">Processos Correntes</a>
+                                  <a class="escolha">Pagamento de Cmpostos</a>
+
+                                  <a class="escolha">Pendentes</a>
+                                  <a class="escolha">Preenchimento de Guias</a>
+                                  <a class="escolha">Adicionar Informacao / ver</a>
+                                  </div>
+                                </div>
+                        <button onclick="ola()">Pesquisar</button>
+                        <div style="display: flex; flex-direction: row; gap: 5%;">
+                           
+                           <form action="/add/back" method="post">
+                            <button style="display: none;" type="submit" > < </button>
+                           </form>
+                           <form action="/add/back" method="post">
+                            <button style="color: white;background-color: black; width: 30px;font-weight: bold;" type="submit" > < </button>
+                           </form>
+
+                            <!--
+                                 <span><%= ipag %></span>
+                                 <span>/ <%= qtotal %></span>
+                            -->
+
+                          <form action="/add/next" method="post">
+                            <button style="color: white;background-color: black; width: 30px;font-weight: bold;" type="submit" > > </button>
+
+                          </form>
+
+                          
+                           
+                        </div>
+                        </form>
+                      </div>
+                      <i class="bx bx-search"></i>
+                      <i class="bx bx-filter"></i>
+                    </div>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Destino</th>
+                          <th>Data</th>
+                          <th>Hora de partida</th>
+                          <th>Duracao</th>
+                          <th>Autocarro</th>
+                          <th>Lotacao</th>
+                          <th>Bilhetes Restante</th>
+
+                        </tr>
+                      </thead>
+                      <div></div>
+                    </table>
+                    <div class="pasta">
+                      <!-- Pesquisa!-->
+
+                      <!-- Lista de resul-->
+                      <div class="item-cont">
+                        <table>
+                          <div>
+                            <tbody>
+                             <%for(let x=0;x<docs.length;x++){ %>
+                              <tr>
+                                <td>
+                                  <p><%=  docs[x].tipo %> </p>
+                                </td>
+                                 <!--<td>01-10-2021</td>--> 
+                       <% let dt = new Date(docs[x].data)  %>
+                       <% let m= dt.getMonth()    
+                          let d=dt.getDate()      
+                          let a=dt.getFullYear() %>
+                       <td> <span><%= (d+'/'+m+'/'+a) %></span> </td>
+                        
+                                <td>
+                                  <span class="status completed">Carregar</span>
+                                </td>
+                              </tr>
+                             <% }%>
+                            </tbody>
+                          </div>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="table-data">
+            <div class="todo">
+              <div class="head">
+                <h3>Processos</h3>
+                <i class="bx bx-plus"></i>
+                <i class="bx bx-filter"></i>
+              </div>
+              <ul class="todo-list">
+                <li class="completed">
+                  <p>Livro de contas</p>
+                  <i class="bx bx-dots-vertical-rounded"></i>
+                </li>
+                <li class="completed">
+                  <p>Impostos</p>
+                  <i class="bx bx-dots-vertical-rounded"></i>
+                </li>
+                <li class="not-completed">
+                  <p>Processos</p>
+                  <i class="bx bx-dots-vertical-rounded"></i>
+                </li>
+                <li class="completed">
+                  <p>Preencher guia</p>
+                  <i class="bx bx-dots-vertical-rounded"></i>
+                </li>
+                <li class="not-completed">
+                  <p>Adicionar/ver informacao</p>
+                  <i class="bx bx-dots-vertical-rounded"></i>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </main>
+    </section>
+
+    <script >
+
+     
+/*
+      var daca = '<%- JSON.stringify(docs) %>';        
+      var olem = '<%- JSON.stringify(natax) %>';   
+        
+      let ep =JSON.parse(olem) 
+      let dc = JSON.parse(daca);      
+      
+*/
+ //console.log(dc);   
+
+      function conv(e)
+        {
+          return e.split(" ").join("");
+        }
+
+ let emp = document.getElementById("dpEmp");
+ let empC = document.getElementById("dpEmp0");
+
+      function nConv(ele)
+       {
+          let msg = '';
+         // console.log(conv(emp.value).length+"|"+ele.length)
+             if(conv(emp.value)==conv(ele.nome.toString()))
+               {
+                   msg = ele._id;                   
+                   //console.log(ele.nome+"|" +msg)
+                  
+               }
+               return msg;
+       }
+
+
+      function ji()
+      {
+           console.log("Ji Triggered");
+            /*
+             empC.value = '';
+               ep.forEach((x,i) => {
+                   
+                 if(empC.value.length>0) 
+                 {
+                   return;
+                 }else
+                 {
+                   empC.value = nConv(x)
+                 };
+                //console.log("R: "+empC.value)
+               });
+               //console.log("Resul: "+empC.value);
+               */
+        }
+    
+/////////////////////////PagScript///////////////////////
+let Tpesq = document.querySelector("#idUsers");
+let Tregis = document.querySelector("#idRegist");
+let TDoc = document.querySelector("#idDoc");
+
+let telas = [Tpesq, Tregis, TDoc];
+function atv(ide) {
+      for (let x = 0; x < telas.length; x++) 
+      {
+           const el = telas[x];
+       
+           if (el.id != ide) 
+           {
+               el.style.display = "none";
+           } 
+           else 
+           {
+               el.style.display = "block";
+           }
+      }
+}
+
+
+/*
+
+    var pkg = '<%- JSON.stringify(pg) %>';     
+    let ptt = '<%- qtotal %>';   
+    let pdata = JSON.parse(pkg);  
+    
+    console.log('tamanho: '+ptt);
+
+*/
+
+  function pag(mn) {
+  // alert("Ola");
+pdata = mn;
+document.querySelector("#idPg").value = pdata;
+
+  switch (mn) {
+    case "reg":
+      atv("idRegist");
+      break;
+    case "users":
+      atv("idUsers");
+      break;
+    case "doc":
+      atv("idDoc");
+      break;
+  }
+
+  //console.log("isto: "+mn);
+}
+
+
+
+       
+ // pag(pdata);   
+//console.log(pdata);   
+/////////////////////////////////Other//////
+
+
+  let ptxt = document.getElementById('Epesq');
+  let mesa = document.querySelector('#mesa');
+
+
+
+  function fecthar(liz)
+  {
+      if(liz!=undefined)
+      {
+         mesa.innerHTML="";
+    
+            for(let x=0;x<liz.length;x++)
+            {    
+               let item =
+                     `<tr>
+                     <td>
+                       <p> ${liz[x].nome}</p>
+                     </td>
+                     <td> ${liz[x].nuit}</td>
+                     <td>
+                       <span class="status completed">Carregar</span>
+                     </td>
+                   </tr>`;
+                  
+                mesa.innerHTML+=item;
+            }
+      }
+      else
+      {
+    
+          for(let x=0;x<ep.length;x++)
+          {
+         
+           
+              let item =
+                 `<tr>
+                 <td>
+                   <p> ${ep[x].nome}</p>
+                 </td>
+                 <td> ${ep[x].nuit}</td>
+                 <td>
+                   <span class="status completed">Carregar</span>
+                 </td>
+               </tr>`;
+                mesa.innerHTML+=item;
+
+          }
+
+      }
+   }
+
+
+ //fecthar();
+
+ function resultar()
+ {
+  /*
+       let f= ptxt.value;
+        let nLista =[];
+
+        if(f.length>0){
+        for(let x=0;x<ep.length;x++)
+        {
+         let el= ep[x];
+         //console.log("Debug: "+JSON.stringify(el))
+           if(ep[x].nome.toLowerCase().includes(f.toLowerCase()))
+           {
+             nLista.push(el);
+           }
+        }
+       
+        fecthar(nLista);
+       }
+       */
+        //console.log(nLista)
+ }
+
+ resultar();
+//////////////////////////////Cnr///////////////////////
+   </script>
+
+    <!--<script src="./media/pagi.js"></script> -->
+
+   <!-- <script src="./media/./adm_calend.js"></script>-->
+    <script src="admresgitar.js"></script>
+
+  </body>
+</html>

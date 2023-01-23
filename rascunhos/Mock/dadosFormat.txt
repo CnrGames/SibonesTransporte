@@ -1,0 +1,28 @@
+
+
+
+//Data destruct
+
+Relatorio
+ {
+   nome: " "
+  "data": {"$date":"2014-02-17"}"
+   emp: " "
+   ad: ' '
+ }
+
+Paga
+ {
+   nome: " "
+   data{dia,mes,ano}
+   emp: " "
+   ad: ' '
+ }
+
+Pendente
+ {
+   nome: " "
+   data{dia,mes,ano}
+   emp: " "
+   ad: ' '
+ }

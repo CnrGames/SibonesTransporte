@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="adm_nego.css" />
+    <link rel="stylesheet" href="adm_dados.css" />
+    <title>Sibas Adm</title>
+  </head>
+  <body>
+    <section id="sidebar">
+      <a href="#" class="brand">
+        <i class="bx bxs-smile"></i>
+        <span class="text">Manager</span>
+      </a>
+      <ul class="side-menu top">
+        <li class="active">
+          <a>
+            <form action="/add/url" method="post"> 
+            
+              <!-- 
+            <div>
+              INDICE USUARIOS
+              
+            -->
+            <i class="bx bxs-dashboard"></i>
+            <input style="display:none;" name="pagi" value="users" />
+            <button class="text bts botaox" onclick="pagIndexUpdate('users')">Usuarios </button>
+            </form>
+          </a>
+        </li>
+        <li>
+          <a>
+            <form action="/add/url" method="post">
+              <!-- <div>
+           
+                INDICE ADD BILHETES    
+            -->
+            <i class="bx bxs-shopping-bag-alt"></i>
+            <img id="img" src="add.png" alt="" />
+            <input style="display:none;" name="pagi" value="reg" />
+            <button class="text bts botaox" onclick="pagIndexUpdate('reg')">Adicionar Bilhete</button>
+            </form>
+          </a>
+        </li>
+        <li>
+          <a>
+            <form action="/add/url" method="post"> 
+            <!--  
+              <div>
+               INDICE  BILHETES  
+            -->
+            <i class="bx bxs-doughnut-chart"></i>
+            <img id="img" src="processo.png" alt="" />
+            <input style="display:none;" name="pagi" value="doc" />
+            <button type="submit"  class="text bts botaox" onclick="pagIndexUpdate('doc')">Todos Bilhetes</button>
+            </form>
+          </a>
+        </li>
+      
+      </ul>
+    </section>
+    <section id="content">
+      <nav>
+        <i class="bx bx-menu"></i>
+      </nav>
+      <main>
+        <ul class="box-info">
+          <li>
+            <i class="bx bxs-calendar-check"></i>
+            <span class="text">
+              <h3>Modo:Administrador</h3>
+              <p>Versao 0.2</p>
+            </span>
+          </li>
+        </ul>
+        <div class="fx">
+          <div class="direita">
+
+
+            <!-- Telas Edit -->
+
+            <div style="position: relative; height: 0px;width: 0px; display: none;">
+              <div id="telaEdit" class="order" style="background-color: rgb(211, 170, 170); position: absolute;
+              height: 300px;border-radius: 6px; width: 500px; z-index: 4;transform: translateX(120px);">
+            
+              <Form id="form" onsubmit=" return respRegBilh();" action="/update/bilhete"">
+                <div style="Display:flex; 
+                   flex-direction: column; gap: 15px;  " >
+                    
+                    <!--Parametros Edit-->
+                     <div style="padding-left: 10%; padding-bottom: 1%;padding-top: 15%;">
+                          <!-- 
+                           viagens (datas,destino,hora_partida,duracao,
+                           tipo de autocarro e lotacao)
+                          -->
+             
+                          <div class="formRow  styleGap">
+   
+                             <div class="formCont" >
+                              <span class="lstyle" style="font-size: 20px;">Datas</span>
+                              <input  id="infor_updt" style="display: none;"   autocomplete="off" value="xoxo"/>
+                              <input class="iStyle"  type="date" id ="upt_datasp" name="datasp"  autocomplete="off"/>
+                             </div>
+                         
+                         <p>                    </p>    
+                              <div class="formCont" >
+                                  <span class="lstyle" style="font-size: 20px;">Hora de partida</span>
+                                  <input class="iStyle"  type="time" id ="upt_horap" name="horap"   autocomplete="off"/>
+                             </div>
+   
+                         </div>
+   
+                         <div class="formRow styleGap">
+   
+                           
+                              <div class="formCont" >
+                                  <span class="lstyle" style="font-size: 20px;">Duracao</span>
+                                   <input class="iStyle"  type="number" id ="upt_durac" name="durac"   autocomplete="off"/>
+                              </div>
+                      
+
+                              <div class="formCont" >
+                                <span class="lstyle" style="font-size: 20px;">Bilhetes Disponiveis</span>
+                                 <input class="iStyle"  type="number" id ="upt_bdisp" name="bdisp"   autocomplete="off"/>
+                            </div>
+
+                          </div>
+   
+   
+                        
+                     </div>
+                <div>
+                  <button style="margin-left: 2%;" onclick="updateBilhas()" class="btnC">Actualizar</button>
+                  <button style="margin-left: 2%;"  onclick="updateBilhas()" class="btnC">Eliminar</button>
+                    <button style="margin-left: 2%;" onclick="updateBilhas()" class="btnC">Fechar</button>
+                </div>
+               </div> 
+               
+               <!-- Form -->
+              </Form>
+            
+            </div>
+           <!--Fim Tela Edit-->
+                               
+
+         </div>
+            <div class="table-data">
+
+           
+              
+
+              <div class="order">
+                
+                <div class="telas">
+              
+
+                  <!-- Tela de Usuarios -->
+                  <div id="idUsers" style="display: none">
+                    <div class="head">
+                      <h3>Todos  Usuarios</h3>
+                      <div class="psqArea">
+                        <input  id="Epesq" type="search" />
+
+                        <button onclick="fecthUsers()">Pesquisar</button>
+                      </div>
+                      <i class="bx bx-search"></i>
+                      <i class="bx bx-filter"></i>
+                    </div>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Nome</th>
+                          <th>Autoridade</th>
+                        </tr>
+                      </thead>
+                      <div></div>
+                    </table>
+                    <div class="pasta">
+                      <!-- Pesquisa!-->
+
+                      <!-- Lista de resultado-->
+                      <div class="item-cont">
+                        <table>
+                          <div>
+                            <tbody id="mesa">
+                            
+                             
+                            </tbody>
+                          </div>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+
+ 
+                   <!-- Tela de registo -->
+                     <div id="idRegist" style="display: none">
+                         <div class="head">
+                           <h3 style="border-bottom-style: solid; 
+                           padding-bottom: 9px;padding-right: 50%; 
+                           border-bottom-width: 3px; ">Registar Viagens</h3>
+                           <i class="bx bx-search"></i>
+                        
+                        
+						</div>
+						
+					<div id="form">
+					 <form style="Display:flex; 
+					    flex-direction: column; gap: 15px;" onsubmit=" return respRegBilh();" action="/add/bilhete" method="post" >
+					   
+                  <div style="padding-left: 10%; padding-bottom: 2%;">
+                       <!-- 
+                        viagens (datas,destino,hora_partida,duracao,
+                        tipo de autocarro e lotacao)
+                       -->
+          
+                       <div class="formRow  styleGap">
+
+                          <div class="formCont" >
+                           <span class="lstyle" style="font-size: 20px;">Datas</span>
+                           <input class="iStyle"  type="date" id ="datasp" name="datasp"  autocomplete="off"/>
+                          </div>
+                      
+                      <p>                    </p>    
+                           <div class="formCont" >
+                               <span class="lstyle" style="font-size: 20px;">Hora de partida</span>
+						                   <input class="iStyle"  type="time" id ="horap" name="horap"   autocomplete="off"/>
+					                </div>
+
+
+                          <div class="formCont" >
+                            <span class="lstyle" style="font-size: 20px;">Vagas Disponiveis</span>
+                            <input class="iStyle"  type="number" id ="vagas" name="vagas"   autocomplete="off"/>
+                          </div>
+
+                      </div>
+
+                      <div class="formRow styleGap">
+
+                          <div class="formCont" >
+						                 	<span class="lstyle" style="font-size: 20px;">Destino</span>
+						                 	<input class="iStyle"   type="text" id ="destino" readonly name="destino" id="nome"  autocomplete="off"/>
+                                
+                                 <div style="position: relative;width: 0; height: 0;padding-top: 3px; ">
+                                        
+                                      <div class="dropdown-content">
+                                        <a class="dest_esc">Pemba</a>
+                                        <a class="dest_esc">Nampula</a>
+                                        <a class="dest_esc">Maputo</a>
+                                        <a class="dest_esc">Matola</a>
+                                        <a class="dest_esc">Zambeze</a>
+                                      </div> 
+                                        
+                                  </div>
+                               
+                              
+                          </div>
+                       
+                           <div class="formCont" >
+                               <span class="lstyle" style="font-size: 20px;">Duracao por hora</span>
+						                  	<input class="iStyle"  type="number" id ="durac" name="durac"   autocomplete="off"/>
+                           </div>
+                   
+                           <div class="formCont" >
+                            <span class="lstyle" style="font-size: 20px;">Preco</span>
+                            <input class="iStyle"  type="number" id ="preco" name="preco"   autocomplete="off"/>
+                          </div>
+
+                       </div>
+
+
+                       <div class="formRow styleGap">
+
+                           <div class="formCont" >
+                                <span class="lstyle" style="font-size: 20px;">lotacao</span>
+                                <input  id="infor" style="display: none;"   autocomplete="off" value="xoxo"/>
+						                   	<input class="iStyle"  type="number" id="lotac" name="lotac"   autocomplete="off"/>
+					                 </div>
+    
+                           <div class="formCont" >
+					                     <span class="lstyle" style="width: 30px;font-size: 20px;">Autocarro</span>
+					                     <input class="iStyle" type="text" name="autoc" id="autoc" readonly  autocomplete="off" />
+
+                               <div style="position: relative;width: 0; height: 0;padding-top: 3px; ">
+                                        
+                                <div class="dropdown-content">
+                                  <a class="dest_esc">Machibombo</a>
+                                  <a class="dest_esc">comboio</a>
+                                  <a class="dest_esc">Caixa aberta</a>
+                                 
+                                </div> 
+                                  
+                            </div>
+
+					                  </div>
+
+                        </div>
+
+                  </div>
+
+
+					   <div>
+					    	 <button type="submit" onclick="reg_viagem()" class="btnC">Adicionar</button>
+					   </div>
+           </form> <!-- Form -->
+				   </div>
+
+					            </div>
+
+           
+                 <!-- Tela de bilhete -->
+                  <div id="idDoc" style="display: none">
+                    <div class="head">
+                      <h3>Bilhetes</h3>
+                      <div class="psqArea">
+                        <form onsubmit=" return resp();"  action="/admin" method="post">
+                        <input id="pesquisa"  name ="pesq" type="date" value="<%=ps%>" />
+                          <!--Empresa-->
+                                   
+                            <div class="dropdown">
+                              <input id="dpEmp" class="dropbtn" placeholder="destino" readonly autocomplete="off"></input>
+                              <input id='dpEmp0'name="dest" style="display: none"></input>
+                              <input  id="idPg"name="pg" style="display: none"></input>
+                              <div class="dropdown-content">
+
+                                <!--
+                                     <% for(let x =0;x<natax.length;x++){ %>
+                                       <a class="escolha"> <%=natax[x].nome %></a>
+                                       <% } %>
+                                -->
+                               
+                           
+                              </div>
+                            </div>
+                        <!-- Tipo-->
+
+                                <div class="dropdown">
+                                  <input name="autoType" id="autoC" class="dropbtn" value="<%= fctg%>" placeholder="Tipo" autocomplete="off" readonly  required></input>
+                                  <div class="dropdown-content">
+                                    <a class="escolha">Todos</a>
+                                  <a class="escolha">Machibombo</a>
+                                  <a class="escolha">comboio</a>
+                                  <a class="escolha">Caixa aberta</a>
+                                  </div>
+                                </div>
+                        <button onclick="ola()">Pesquisar</button>
+                        <div style="display: flex; flex-direction: row; gap: 5%;">
+                           
+                           <form action="/add/back" method="post">
+                            <button style="display: none;" type="submit" > < </button>
+                           </form>
+                           <form action="/add/back" method="post">
+                            <button style="color: white;background-color: black; width: 30px;font-weight: bold;" type="submit" > < </button>
+                           </form>
+ 
+                            <!--
+                                 <span><%= ipag %></span>
+                                 <span>/ <%= qtotal %></span>
+                            -->
+
+                          <form action="/add/next" method="post">
+                            <button style="color: white;background-color: black; width: 30px;font-weight: bold;" type="submit" > > </button>
+
+                          </form>
+
+                          
+                           
+                        </div>
+                        </form>
+                      </div>
+                      <i class="bx bx-search"></i>
+                      <i class="bx bx-filter"></i>
+                    </div>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Destino</th>
+                          <th><p style="transform: translateX(10px);"> Data</p> </th>
+                          <th><p style="transform: translateX(45px);">Hora de partida</p></th>
+                          <th>Duracao</th>
+                          <th>Autocarro</th>
+                          <th>Lotacao</th>
+                          <th>Bilhetes Restante</th>
+
+                        </tr>
+                      </thead>
+                      <div></div>
+                    </table>
+                    <div class="pasta">
+                      <!-- Pesquisa!-->
+
+                      <!-- Lista de resul-->
+                      <div class="item-cont">
+                        <table>
+                          <div>
+                            <tbody>
+                             <%for(let x=0;x<docs.length;x++){ %>
+                              <tr>
+                                <td>
+                                  <p><%=  docs[x].destino %> </p>
+                                </td>
+                                 <!--<td>01-10-2021</td>--> 
+                       <% let dt = new Date(docs[x].data)  %>
+                       <% let m= dt.getMonth()    
+                          let d=dt.getDate()      
+                          let a=dt.getFullYear() %>
+                       <td> <p style="transform: translateX(-40px);"><%= (d+'/'+m+'/'+a) %></p> </td>
+                       
+                       <td>
+                        <p style="transform: translateX(-50px);"><%=  docs[x].hora_partida %> </p>
+                      </td>
+
+                      <td>
+                        <p><%=  docs[x].duracao %> </p>
+                      </td>
+
+                      <td>
+                        <p><%=  docs[x].autocarro %> </p>
+                      </td>
+
+                      <td>
+                        <p><%=  docs[x].lotacao %> </p>
+                      </td>
+
+                      <td>
+                        <p><%=  docs[x].b_restante %> </p>
+                      </td>
+
+                                <td>
+                                  <span class="status completed">Editar</span>
+                                 
+                                </td>
+                              </tr>
+                             <% }%>
+                            </tbody>
+                          </div>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="table-data">
+            <div class="todo">
+              <div class="head">
+                <h3>Processos</h3>
+                <i class="bx bx-plus"></i>
+                <i class="bx bx-filter"></i>
+              </div>
+              <ul class="todo-list">
+                <li class="completed">
+                  <p>Livro de contas</p>
+                  <i class="bx bx-dots-vertical-rounded"></i>
+                </li>
+                <li class="completed">
+                  <p>Relatorios</p>
+                  <i class="bx bx-dots-vertical-rounded"></i>
+                </li>
+                <li class="not-completed">
+                  <p>Clientes</p>
+                  <i class="bx bx-dots-vertical-rounded"></i>
+                </li>
+                <li class="completed">
+                  <p>Locais</p>
+                  <i class="bx bx-dots-vertical-rounded"></i>
+                </li>
+                <li class="not-completed">
+                  <p>Adicionar/ver informacao</p>
+                  <i class="bx bx-dots-vertical-rounded"></i>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </main>
+    </section>
+
+    <script >
+
+        var olem = '<%- JSON.stringify(natax) %>';        
+        let ul =JSON.parse(olem) 
+     
+
+      var daca = '<%- JSON.stringify(docs) %>';        
+     
+      let dc = JSON.parse(daca);      
+      
+
+ console.log(dc);   
+
+      function conv(e)
+        {
+          return e.split(" ").join("");
+        }
+
+ let emp = document.getElementById("dpEmp");
+ let empC = document.getElementById("dpEmp0");
+
+      function nConv(ele)
+       {
+          let msg = '';
+         // console.log(conv(emp.value).length+"|"+ele.length)
+             if(conv(emp.value)==conv(ele.nome.toString()))
+               {
+                   msg = ele._id;                   
+                   //console.log(ele.nome+"|" +msg)
+                  
+               }
+               return msg;
+       }
+
+
+      function ji()
+      {
+           console.log("Ji Triggered");
+            /*
+             empC.value = '';
+               ep.forEach((x,i) => {
+                   
+                 if(empC.value.length>0) 
+                 {
+                   return;
+                 }else
+                 {
+                   empC.value = nConv(x)
+                 };
+                //console.log("R: "+empC.value)
+               });
+               //console.log("Resul: "+empC.value);
+               */
+        }
+    
+/////////////////////////PagScript///////////////////////
+let Tpesq = document.querySelector("#idUsers");
+let Tregis = document.querySelector("#idRegist");
+let TDoc = document.querySelector("#idDoc");
+
+let telas = [Tpesq, Tregis, TDoc];
+function atv(ide) {
+      for (let x = 0; x < telas.length; x++) 
+      {
+           const el = telas[x];
+       
+           if (el.id != ide) 
+           {
+               el.style.display = "none";
+           } 
+           else 
+           {
+               el.style.display = "block";
+           }
+      }
+}
+
+
+
+
+    var pageIndex = '<%- JSON.stringify(pg) %>';     
+   // let ptt = '<%- qtotal %>';   
+    let pagdata = JSON.parse(pageIndex);  
+    
+    
+
+
+
+  function pagIndexUpdate(mn) 
+  {
+         // alert("Ola");
+       pagdata = mn;
+       document.querySelector("#idPg").value = pagdata;
+       
+         switch (mn) {
+    case "reg":
+      atv("idRegist");
+      break;
+    case "users":
+      atv("idUsers");
+      break;
+    case "doc":
+      atv("idDoc");
+      break;
+  }
+       
+         //console.log("isto: "+mn);
+}
+
+ 
+  pagIndexUpdate(pagdata);   
+//console.log(pdata);   
+/////////////////////////////////Other//////
+
+
+  let ptxt = document.getElementById('Epesq');
+  let mesa = document.querySelector('#mesa');
+
+     function respRegBilh() {
+   
+      let infor = document.getElementById('infor');
+
+
+       if(infor.value=="true")
+       {
+        return true;
+       }else
+       {
+        return false;
+       }
+
+         
+        
+      }
+  
+      function respBilhUpdt() {
+   
+               let infor = document.getElementById('infor-updt');
+            
+            
+                if(infor.value=="true")
+                {
+                   return true;
+                }else
+                {
+                    return false;
+                }
+           
+   }
+
+
+
+
+
+  function updtUserUlis(usrlist)
+  {
+      if(usrlist!=undefined)
+      {
+         mesa.innerHTML="";
+    
+            for(let x=0;x<usrlist.length;x++)
+            {    
+               let item =
+                     `<tr>
+                     <td>
+                       <p> ${usrlist[x].nome}</p>
+                     </td>
+                     <td>
+                       <p> ${usrlist[x].role}</p>
+                     </td>
+                     <td>
+                       <span class="status completed">Carregar</span>
+                     </td>
+                   </tr>`;
+                  
+                mesa.innerHTML+=item;
+            }
+      }
+      else
+      {
+    
+          for(let x=0;x<ul.length;x++)
+          {
+         
+           
+              let item =
+                 `<tr>
+                 <td>
+                   <p> ${ul[x].nome}</p>
+                 </td>
+                
+                 <td>
+                   <p> ${ul[x].role}</p>
+                 </td>
+
+                 <td>
+                   <span class="status completed">Eliminar</span>
+                 </td>
+               </tr>`;
+                mesa.innerHTML+=item;
+
+          }
+
+      }
+   }
+
+ updtUserUlis();
+
+ function fecthUsers()
+ {
+  
+       let f= ptxt.value;
+        let nLista =[];
+
+        if(f.length>0){
+        for(let x=0;x<ul.length;x++)
+        {
+         let el= ul[x];
+         //console.log("Debug: "+JSON.stringify(el))
+           if(ul[x].nome.toLowerCase().includes(f.toLowerCase()))
+           {
+             nLista.push(el);
+           }
+        }
+       
+        updtUserUlis(nLista);
+       }
+       
+        //console.log(nLista)
+ }
+
+ fecthUsers();
+
+
+
+//////////////////////////////Cnr///////////////////////
+   </script>
+
+    <!--<script src="./media/pagi.js"></script> -->
+
+    <script src="./scripts/adm_calend.js"></script>
+    <script src="./scripts/admresgitar.js"></script>
+
+  </body>
+</html>

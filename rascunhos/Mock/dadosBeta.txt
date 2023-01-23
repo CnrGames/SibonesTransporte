@@ -1,0 +1,29 @@
+
+//Docs
+[
+{
+  "tipo": "a",
+  "status": "livre" , 
+   "emp": "1mera"  
+}
+,
+
+{
+  "tipo": "b",
+   "status": "coupado"
+    ,"emp": "zeca"     
+   
+},
+{
+  "tipo": "c",
+  "status": "livre"  
+ ,"emp": "tira"     
+}
+,
+
+{
+  "tipo": "d",
+   "status": "coupado"
+ ,"emp": "unda"      
+}
+]

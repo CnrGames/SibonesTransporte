@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="login_style.css" />
+
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+  </head>
+  <body>
+    <div class="conteiner">
+      <div class="content1"></div>
+      <div class="login-form">
+        <h1>Login</h1>
+        <form onsubmit=" return resp();" action="/login" method="post">
+          <p>Nome do cliente</p>
+          <input id="nm" type="text" name="user" placeholder="Nome" />
+          <p>Password</p>
+          <input
+            id="passF"
+            type="tel"
+            name="pass"
+            placeholder="codigo Especial"
+          />
+          <input id="cEm" name="emId" style="display: none" />
+          <button type="submit" onclick="entrar()">Entrar</button>
+        </form>
+      </div>
+    </div>
+    <script>
+      var lg = document.getElementById('nm');
+      var passF = document.getElementById('passF');
+      var olem = '<%- JSON.stringify(natax) %>';
+      let sd = JSON.parse(olem);
+      console.log(lg);
+      var vai = false;
+      let em = document.getElementById('cEm');
+
+      function entrar() {
+        let valEm;
+        if (lg.value.length > 0) {
+          let go = false;
+          for (let x = 0; x < sd.length; x++) {
+            let el = sd[x];
+            let vl = String(lg.value).toLowerCase();
+            let enoma = String(el.nome).toLowerCase();
+            if (vl === enoma) {
+              valEm = el;
+              console.log(el);
+              go = true;
+            }
+          }
+
+          if (go == true) {
+            console.log('Valooor: ' + valEm.nome);
+            em.value = valEm.nome;
+            vai = go;
+            //alert('entra');
+          } else {
+            vai = go;
+            alert('Errado!');
+          }
+        } else {
+          console.log(lg.value.length);
+          console.log('Nadaaa!!!');
+        }
+      }
+
+      function resp() {
+        if (lg.value.length > 0 && em.value.length > 0) {
+          if (vai == true) {
+            return true;
+          }
+        } else {
+          alert('Porfavor Preecha correctaMente');
+          lg.value = '';
+          passF.value = '';
+          return false;
+        }
+      }
+    </script>
+  </body>
+</html>
