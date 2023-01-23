@@ -1,5 +1,6 @@
 const rt = require('express').Router();
 const { ObjectId } = require('mongodb');
+const pdfServ = require('./pdfk');
 
 function sutra(extMsg, extExpress, urlParser) {
   //console.log(ak,az.locals.usa);
@@ -59,6 +60,20 @@ function sutra(extMsg, extExpress, urlParser) {
   }
 
   //--------------------Usuarios
+
+  rt.get('/recibo', urlParser, (req, res, next) => {
+    const stream = res.writeHead(200, {
+      'Content-Type': 'application/pdf',
+      'Content-Disposition': 'attachment;filename=invoice.pdf',
+    });
+    /*
+    pdfServ.buildPdf(
+      (chunk) => stream.write(chunk),
+      () => stream.end()
+    );
+*/
+  });
+
   rt.get('/user', urlParser, (req, res) => {
     let lta = [];
     let docR = [];
@@ -184,15 +199,9 @@ function sutra(extMsg, extExpress, urlParser) {
         // res.send(JSON.stringify(req.body));
         bdispo = listar[0].b_restante;
         if (bdispo > 0) {
-          return req.ddb
-            .collection('Bilhetes')
-            .updateOne(
-              { _id: ObjectId(`${bilh.bId}`) },
-              { $set: { b_restante: bdispo - 1 } }
-            )
-            .then(() => {
-              res.send(JSON.stringify(listar[0]));
-            });
+          return req.ddb.collection('Bilhetes').then(() => {
+            res.send(JSON.stringify(listar[0]));
+          });
         } else {
           res.send(JSON.stringify('Indisponivel'));
         }

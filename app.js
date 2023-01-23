@@ -1,35 +1,36 @@
-const { json } = require("express");
-const ex = require("express");
-const { ObjectId } = require("mongodb");
-const { connectToDb, getDb } = require("./db");
+const { json } = require('express');
+const ex = require('express');
+const { ObjectId } = require('mongodb');
+const { connectToDb, getDb } = require('./db');
 
-const path = require("path");
+const path = require('path');
 
-const bc = require("body-parser");
-const { check, validationResult } = require("express-validator");
-const { urlencoded } = require("body-parser");
-const bodyParser = require("body-parser");
+const bc = require('body-parser');
+const { check, validationResult } = require('express-validator');
+const { urlencoded } = require('body-parser');
+const bodyParser = require('body-parser');
 
 const ucd = bodyParser.urlencoded({ extended: false });
 const az = ex();
+const port = process.env.PORT || 3000;
 az.use(ex.json());
 
 //Vars
-az.locals.usa = "combushk";
+az.locals.usa = 'combushk';
 
 //Rotas
-const login_R = require("./rotas/rt_login");
-const adm_R = require("./rotas/rt_admin");
-const user_R = require("./rotas/rt_user")("sutra!!!", az, ucd);
+const login_R = require('./rotas/rt_login');
+const adm_R = require('./rotas/rt_admin');
+const user_R = require('./rotas/rt_user')('sutra!!!', az, ucd);
 
 //View
-az.set("view engine", "ejs");
+az.set('view engine', 'ejs');
 
 //Admin
-az.use(ex.static(path.join(__dirname, "Media", "Telas")));
-az.use(ex.static(path.join(__dirname, "Media", "Fronts", "user")));
-az.use(ex.static(path.join(__dirname, "Media", "Fronts", "login")));
-az.use(ex.static(path.join(__dirname, "Media", "Telas", "tudooo")));
+az.use(ex.static(path.join(__dirname, 'Media', 'Telas')));
+az.use(ex.static(path.join(__dirname, 'Media', 'Fronts', 'user')));
+az.use(ex.static(path.join(__dirname, 'Media', 'Fronts', 'login')));
+az.use(ex.static(path.join(__dirname, 'Media', 'Telas', 'tudooo')));
 
 //Funcoes
 // db connection
@@ -45,7 +46,7 @@ function DbStart(req, res, next) {
       req.ddb = ddb;
       next();
     } else {
-      res.send("Em manutencao");
+      res.send('Em manutencao');
     }
   });
 }
@@ -66,7 +67,7 @@ az.use(seDados);
 az.use(DbStart);
 let nome;
 ///Paginas Final
-let userId = "";
+let userId = '';
 
 az.use(login_R);
 
@@ -79,6 +80,6 @@ function getNomes(req, res, next) {
   return;
 }
 
-az.listen(3000, (req, res) => {
-  console.log("Fecthing db....");
+az.listen(port, (req, res) => {
+  console.log('Fecthing db....');
 });
