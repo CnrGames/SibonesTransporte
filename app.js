@@ -64,7 +64,7 @@ function seDados(req, res, next) {
 //Funcoes Basicas
 az.use(seDados);
 
-az.use(DbStart);
+//az.use(DbStart);
 let nome;
 ///Paginas Final
 let userId = '';

@@ -40,7 +40,7 @@ rt.get('/login', ucd, (req, res) => {
     }
   }
 
-  getClientes();
+  //getClientes();
 });
 
 rt.post('/login', ucd, (req, res) => {
