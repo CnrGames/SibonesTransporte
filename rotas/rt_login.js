@@ -39,7 +39,10 @@ rt.get('/login', ucd, (req, res) => {
       res.status(500).json({ err: 'could not fetch Data' });
     }
   }
-
+  res.render('login', {
+    natax: lta,
+    nataxo: req.naruto,
+  });
   //getClientes();
 });
 
