@@ -68,7 +68,7 @@ function sutra(extMsg, extExpress, urlParser) {
   //Imprimir
   rt.get('/recibo', urlParser, (req, res, next) => {
     let img1 = '';
-    if (req.app.locals.user != null) {
+    if (req.app.locals.user != null && req.app.locals.valorp != undefined) {
       let qrImg = qrcode.toDataURL(
         `Compra do Bilhete para ${req.app.locals.destinop},efectuado com exito `,
         function (err, url) {
@@ -207,82 +207,85 @@ function sutra(extMsg, extExpress, urlParser) {
 
     let lta = [];
     docR.length = 0;
-
-    if (req.body.pesq == undefined) {
-      req.body.pesq = '';
-    }
-    function pesquisa(n) {
-      if (req.body.pesq == '' && req.body.autoType.length <= 0) {
-        console.log('a');
-        return {};
-      } else if (
-        req.body.pesq.length > 0 &&
-        req.body.autoType.length > 0 &&
-        req.body.autoType == 'Todos'
-      ) {
-        console.log('be');
-        customData = getDate(req.body.pesq);
-        return { data: `${customData}` };
-      } else if (req.body.pesq == '' && req.body.autoType.length > 0) {
-        console.log('b');
-
-        return { autocarro: `${req.body.autoType}` };
-      } else if (req.body.pesq.length > 0 && req.body.autoType.length > 0) {
-        console.log('b');
-
-        return { autocarro: `${req.body.autoType}` };
-      } else if (
-        req.body.pesq != '' &&
-        req.body.pesq != null &&
-        req.body.dest.length > 0
-      ) {
-        console.log('c');
-
-        return { data: `${req.body.pesq}`, destino: `${req.body.autoType}` };
-      } else {
-        console.log('d');
-
-        return { data: `${req.body.pesq}` };
+    if (req.app.locals.user != undefined || req.app.locals.user != null) {
+      if (req.body.pesq == undefined) {
+        req.body.pesq = '';
       }
-    }
-    macD = apsrc(req.body);
+      function pesquisa(n) {
+        if (req.body.pesq == '' && req.body.autoType.length <= 0) {
+          console.log('a');
+          return {};
+        } else if (
+          req.body.pesq.length > 0 &&
+          req.body.autoType.length > 0 &&
+          req.body.autoType == 'Todos'
+        ) {
+          console.log('be');
+          customData = getDate(req.body.pesq);
+          return { data: `${customData}` };
+        } else if (req.body.pesq == '' && req.body.autoType.length > 0) {
+          console.log('b');
 
-    req.ddb
-      .collection('Bilhetes')
-      .find(macD)
-      .sort({ destino: 1 })
-      .collation({ locale: 'en', caseLevel: true })
-      .forEach((d) => {
-        docR.push(d);
-      })
-      /*
-      .then(() => {
-        res.redirect(`/user?t=${tidxI}`);
-      })*/
+          return { autocarro: `${req.body.autoType}` };
+        } else if (req.body.pesq.length > 0 && req.body.autoType.length > 0) {
+          console.log('b');
 
-      .then((e) => {
-        res.render('user', {
-          natax: nemp.nome, //userName.nome,
-          ps: req.body.pesq,
-          tidx: tidxI,
-          ctg: req.body.categ,
-          docs: docR,
+          return { autocarro: `${req.body.autoType}` };
+        } else if (
+          req.body.pesq != '' &&
+          req.body.pesq != null &&
+          req.body.dest.length > 0
+        ) {
+          console.log('c');
+
+          return { data: `${req.body.pesq}`, destino: `${req.body.autoType}` };
+        } else {
+          console.log('d');
+
+          return { data: `${req.body.pesq}` };
+        }
+      }
+      macD = apsrc(req.body);
+
+      req.ddb
+        .collection('Bilhetes')
+        .find(macD)
+        .sort({ destino: 1 })
+        .collation({ locale: 'en', caseLevel: true })
+        .forEach((d) => {
+          docR.push(d);
+        })
+        /*
+               .then(() => {
+                 res.redirect(`/user?t=${tidxI}`);
+               })*/
+
+        .then((e) => {
+          res.render('user', {
+            natax: nemp.nome, //userName.nome,
+            ps: req.body.pesq,
+            tidx: tidxI,
+            ctg: req.body.categ,
+            docs: docR,
+          });
+
+          //console.log(req.body);
+          //res.send(req.body);
+
+          res.status(200);
+        })
+
+        .catch((e) => {
+          res.status(500).json({ error: 'erro', ish: req.body });
         });
 
-        //console.log(req.body);
-        //res.send(req.body);
+      //console.log("RelaTox:  " + json(req.body));
 
-        res.status(200);
-      })
-
-      .catch((e) => {
-        res.status(500).json({ error: 'erro', ish: req.body });
-      });
-
-    //console.log("RelaTox:  " + json(req.body));
-
-    // let { nego } = req.body;
-    // console.log(nego);
+      // let { nego } = req.body;
+      // console.log(nego);
+    } else {
+      res.redirect('/login');
+    }
   });
 
   //Comprar bilhete

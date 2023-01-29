@@ -286,73 +286,77 @@ rt.get('/admin', ucd, (req, res) => {
 
   console.log(req.app.locals.user);
   curLst.length = 0;
-  if (req.app.locals.user.role == 'adm') {
-    if (telaId == '') {
-      telaId = 'users';
-    }
-    let tipoBilhete = docQ(req.body.autoType);
-    if (req.body.pg == undefined || req.body.pg == '') {
-      req.body.pg = 'users';
-    }
+  if (req.app.locals.user != undefined || req.app.locals.user != null) {
+    if (req.app.locals.user.role == 'adm') {
+      if (telaId == '') {
+        telaId = 'users';
+      }
+      let tipoBilhete = docQ(req.body.autoType);
+      if (req.body.pg == undefined || req.body.pg == '') {
+        req.body.pg = 'users';
+      }
 
-    if (docR.length > 0) {
-      docR.length = 0;
-      req.ddb
-        .collection('Bilhetes')
-        .find(p)
-        .sort({ destino: 1 })
-        .collation({ locale: 'en', caseLevel: true })
-        .skip(pagina * perPage)
-        .limit(perPage)
-        .forEach((d) => {
-          docR.push(d);
-        })
+      if (docR.length > 0) {
+        docR.length = 0;
+        req.ddb
+          .collection('Bilhetes')
+          .find(p)
+          .sort({ destino: 1 })
+          .collation({ locale: 'en', caseLevel: true })
+          .skip(pagina * perPage)
+          .limit(perPage)
+          .forEach((d) => {
+            docR.push(d);
+          })
+          .then(() => {
+            //console.log('aa '+tmn);
+            return req.ddb
+              .collection('Bilhetes')
+              .countDocuments(p)
+              .then((e) => {
+                tmn = e;
+                paginaTotal = parseInt(tmn / perPage);
+                if (perPage == paginaTotal) {
+                  paginaTotal--;
+                }
+                console.log('Testeeee:' + tmn);
+              });
+            //console.log('bb '+tmn);
+          });
+      }
+
+      //inuyasha
+      req.db
+        .collection('User')
+        .find()
+        .sort({ nome: 1 })
+        .forEach((cs) => curLst.push(cs))
         .then(() => {
-          //console.log('aa '+tmn);
-          return req.ddb
-            .collection('Bilhetes')
-            .countDocuments(p)
-            .then((e) => {
-              tmn = e;
-              paginaTotal = parseInt(tmn / perPage);
-              if (perPage == paginaTotal) {
-                paginaTotal--;
-              }
-              console.log('Testeeee:' + tmn);
-            });
-          //console.log('bb '+tmn);
+          //console.log("T actual: "+tmn);
+          //----------------------------------------------
+          res.render('adminFront', {
+            natax: curLst,
+            ps: txtPesquisa,
+            fctg: txdfunCategor,
+            ftype: txdTipo,
+            docs: docR,
+            emp: txemp,
+            pg: telaId,
+            qtotal: paginaTotal,
+            ipag: pagina,
+            //pg
+          });
+          res.status(200);
+        })
+
+        .catch(() => {
+          res.status(500).json({ err: 'could not pD ' });
         });
+    } else {
+      res.redirect('/user');
     }
-
-    //inuyasha
-    req.db
-      .collection('User')
-      .find()
-      .sort({ nome: 1 })
-      .forEach((cs) => curLst.push(cs))
-      .then(() => {
-        //console.log("T actual: "+tmn);
-        //----------------------------------------------
-        res.render('adminFront', {
-          natax: curLst,
-          ps: txtPesquisa,
-          fctg: txdfunCategor,
-          ftype: txdTipo,
-          docs: docR,
-          emp: txemp,
-          pg: telaId,
-          qtotal: paginaTotal,
-          ipag: pagina,
-          //pg
-        });
-        res.status(200);
-      })
-
-      .catch(() => {
-        res.status(500).json({ err: 'could not pD ' });
-      });
   } else {
-    res.redirect('/user');
+    res.redirect('/login');
   }
 });
 

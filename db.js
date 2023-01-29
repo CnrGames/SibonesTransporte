@@ -1,9 +1,11 @@
-const { MongoClient } = require("mongodb");
+const { MongoClient } = require('mongodb');
 let dbCon;
 
 module.exports = {
   connectToDb: (cb) => {
-    MongoClient.connect("mongodb://localhost:27017/SibasTpm")
+    MongoClient.connect(
+      'mongodb+srv://isctem:isctem@isctemcluster.jwrxodo.mongodb.net/SIbasTpm?retryWrites=true&w=majority'
+    )
       .then((client) => {
         dbCon = client.db();
         return cb();
