@@ -2,7 +2,9 @@ const { json } = require('express');
 const ex = require('express');
 const { ObjectId } = require('mongodb');
 const { connectToDb, getDb } = require('./db');
+pdf = require('express-pdf');
 
+//previously app.use(pdf())
 const path = require('path');
 
 const bc = require('body-parser');
@@ -14,6 +16,7 @@ const ucd = bodyParser.urlencoded({ extended: false });
 const az = ex();
 const port = process.env.PORT || 3000;
 az.use(ex.json());
+az.use(pdf);
 
 //Vars
 az.locals.usa = 'combushk';
@@ -30,6 +33,7 @@ az.set('view engine', 'ejs');
 az.use(ex.static(path.join(__dirname, 'Media', 'Telas')));
 az.use(ex.static(path.join(__dirname, 'Media', 'Fronts', 'user')));
 az.use(ex.static(path.join(__dirname, 'Media', 'Fronts', 'login')));
+
 az.use(ex.static(path.join(__dirname, 'Media', 'Telas', 'tudooo')));
 
 //Funcoes
@@ -57,14 +61,13 @@ function seDados(req, res, next) {
     req.user;
   }
   req.id;
-  // console.log("Dado....Loaded");
-  //console.log(req.originalUrl);
+
   next();
 }
 //Funcoes Basicas
 az.use(seDados);
 
-//az.use(DbStart);
+az.use(DbStart);
 let nome;
 ///Paginas Final
 let userId = '';

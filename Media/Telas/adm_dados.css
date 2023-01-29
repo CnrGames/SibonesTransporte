@@ -13,6 +13,15 @@
  /* width: 10%; */
 }
 
+
+.iStyle1 {
+  height: 30px;
+
+  min-width: 120px;
+  width: 95%;
+   
+ /* width: 10%; */
+}
 /*
 .lStyle {
   
@@ -45,6 +54,11 @@
   /*transform: translate(10%,70%);*/
 
   border-radius: 5px;
+}
+
+.invisivel
+{
+  display: none;
 }
 
 /*------------------------Pesquisa   */
@@ -171,6 +185,13 @@ body {
   padding-bottom: 5%;
   padding-top: 2%;
 }
+
+.lstyle1
+{
+  padding-bottom: 5%;
+  padding-top: 2%;
+}
+
 
 .formCont
 {

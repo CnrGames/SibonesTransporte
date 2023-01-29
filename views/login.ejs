@@ -19,9 +19,9 @@
           <p>Password</p>
           <input
             id="passF"
-            type="tel"
+            type="password"
             name="pass"
-            placeholder="codigo Especial"
+            placeholder="Password"
           />
           <input id="cEm" name="emId" style="display: none" />
           <button type="submit" onclick="entrar()">Entrar</button>
@@ -36,7 +36,7 @@
       console.log(lg);
       var vai = false;
       let em = document.getElementById('cEm');
-
+      let npass = true;
       function entrar() {
         let valEm;
         if (lg.value.length > 0) {
@@ -56,10 +56,11 @@
             console.log('Valooor: ' + valEm.nome);
             em.value = valEm.nome;
             vai = go;
+
             //alert('entra');
           } else {
             vai = go;
-            alert('Errado!');
+            alert('Dado invalido!');
           }
         } else {
           console.log(lg.value.length);
@@ -68,9 +69,22 @@
       }
 
       function resp() {
+        olem.array.forEach((el, i) => {
+          if (passF.value == el.pass) {
+            npass = false;
+          }
+        });
+
         if (lg.value.length > 0 && em.value.length > 0) {
           if (vai == true) {
-            return true;
+            if (go == true) {
+              if (npass == true) {
+                alert('Codigo invalido!');
+                return !npass;
+              } else {
+                return !npass;
+              }
+            }
           }
         } else {
           alert('Porfavor Preecha correctaMente');

@@ -78,18 +78,21 @@
           <div class="direita">
 
 
-            <!-- Telas Edit -->
+            <!-- Telas Edit ben11-->
 
-            <div style="position: relative; height: 0px;width: 0px; display: none;">
-              <div id="telaEdit" class="order" style="background-color: rgb(211, 170, 170); position: absolute;
-              height: 300px;border-radius: 6px; width: 500px; z-index: 4;transform: translateX(120px);">
+            <div id="telaEdit" style="position: relative; height: 0px;width: 0px; display: none;">
+              <div  class="order" style="background-color: rgb(211, 170, 170); position: absolute;
+              height: 350px;border-radius: 6px; width: 500px; z-index: 4;transform: translateX(120px);">
             
-              <Form id="form" onsubmit=" return respRegBilh();" action="/update/bilhete"">
+            <!-- below Form-->
+
+            <!--   <div id="form" onsubmit=" return respEditBilh();" action="updt/bilhete"> -->
+
+              <div id="form" >
                 <div style="Display:flex; 
-                   flex-direction: column; gap: 15px;  " >
-                    
+                   flex-direction: column; gap: 15px; " >
                     <!--Parametros Edit-->
-                     <div style="padding-left: 10%; padding-bottom: 1%;padding-top: 15%;">
+                     <div style="padding-left: 10%; padding-bottom: 1%;padding-top: 15%; ">
                           <!-- 
                            viagens (datas,destino,hora_partida,duracao,
                            tipo de autocarro e lotacao)
@@ -126,23 +129,74 @@
                             </div>
 
                           </div>
+
+                          <div class="formRow styleGap">
+   
+                           
+                                   <div class="formCont" >
+                                          <span class="lstyle" style="width: 30px;font-size: 20px;">Autocarro</span>
+                                          <input class="iStyle" type="text" name="autoc" id="upt_autoc" readonly  autocomplete="off" />
+
+                                     <div style="position: relative;width: 0; height: 0;padding-top: 3px; ">
+                                              
+                                                <div class="dropdown-content">
+                                                  <a class="dest_esc">Pequeno</a>
+                                                  <a class="dest_esc">Medio</a>
+                                                  <a class="dest_esc">Grande</a>
+                                                 
+                                                </div> 
+                                        
+                                     </div>
+
+                                  </div>
+                            
+        
+                                    <div class="formCont" >
+                                      <span class="lstyle" style="font-size: 20px;">Preco</span>
+                                      <input class="iStyle"  type="number" id ="upt_preco" name="preco"   autocomplete="off"/>
+                                    </div>
+
+                           </div>
    
    
                         
                      </div>
                 <div>
-                  <button style="margin-left: 2%;" onclick="updateBilhas()" class="btnC">Actualizar</button>
-                  <button style="margin-left: 2%;"  onclick="updateBilhas()" class="btnC">Eliminar</button>
-                    <button style="margin-left: 2%;" onclick="updateBilhas()" class="btnC">Fechar</button>
+                  <input  id="inforUp" style="display: none;"   autocomplete="off" value="xoxo"/>
+            
+                  <div style="display: flex;flex-direction: row; margin-left: 35px;"> 
+                      <Form  action="upa/bilhete" onsubmit=" return respEditBilh();" method="post">
+                        <input  id="upHora"     name="horap"  style="display: none;"   autocomplete="off" />
+                        <input  id="upBilhete"  name="vagas"  style="display: none;"   autocomplete="off"/>
+                        <input  id="upData"     name="datasp"   style="display: none;" autocomplete="off" />
+                        <input  id="upDuracao"  name="durac"  style="display: none;"   autocomplete="off"/>
+                        <input id="tickId" name="tickId" class="invisivel" />
+
+                        <input  id="uppreco"  name="preco"   style="display: none;"   autocomplete="off" />
+                        <input  id="upautoc"  name="autoc"   style="display: none;"   autocomplete="off"/>
+                        <button style="margin-left: 2%;"  type="submit" onclick="Up_viagem()" class="btnC">Actualizar</button>
+                      </Form>
+    
+                      <Form  action="dell/bilhete" method="post">
+                        <input id="tickId" name="tickId" class="invisivel" />
+                        <button style="margin-left: 2%;"  type="submit"  class="btnC">Eliminar</button>
+                      </Form>
+    
+                      <button style="margin-left: 2%;" onclick="fecharTelaEdit()" class="btnC">Fechar</button>
                 </div>
+                
+                </div>
+
                </div> 
                
                <!-- Form -->
-              </Form>
+              </div>
             
             </div>
+
            <!--Fim Tela Edit-->
                                
+           <div style="position: absolute;z-index: 1;transform: translateX(-500px);background-color: rgba(15, 204, 204, 0); height: 500px;width: 2000px;"> </div>
 
          </div>
             <div class="table-data">
@@ -284,14 +338,14 @@
 
                                <div style="position: relative;width: 0; height: 0;padding-top: 3px; ">
                                         
-                                <div class="dropdown-content">
-                                  <a class="dest_esc">Machibombo</a>
-                                  <a class="dest_esc">comboio</a>
-                                  <a class="dest_esc">Caixa aberta</a>
-                                 
-                                </div> 
+                                          <div class="dropdown-content">
+                                            <a class="dest_esc">Medio</a>
+                                            <a class="dest_esc">Grande</a>
+                                            <a class="dest_esc">Pequeno</a>
+                                           
+                                          </div> 
                                   
-                            </div>
+                               </div>
 
 					                  </div>
 
@@ -315,22 +369,21 @@
                       <h3>Bilhetes</h3>
                       <div class="psqArea">
                         <form onsubmit=" return resp();"  action="/admin" method="post">
-                        <input id="pesquisa"  name ="pesq" type="date" value="<%=ps%>" />
+                        <input id="pesquisa"  name ="pesq" type="time" value="<%=ps%>" class="invisivel"/>
                           <!--Empresa-->
                                    
                             <div class="dropdown">
-                              <input id="dpEmp" class="dropbtn" placeholder="destino" readonly autocomplete="off"></input>
-                              <input id='dpEmp0'name="dest" style="display: none"></input>
+                                    
+                              <input id="dpEmp" style="width: 120px; height: fit-content;" value="<%= ftype%>"   class="iStyle" placeholder="destinox" readonly autocomplete="off"></input>
+                              <input id='dpEmp0'name="dest" value="<%= ftype%>" style="display: none"></input>
                               <input  id="idPg"name="pg" style="display: none"></input>
                               <div class="dropdown-content">
-
-                                <!--
-                                     <% for(let x =0;x<natax.length;x++){ %>
-                                       <a class="escolha"> <%=natax[x].nome %></a>
-                                       <% } %>
-                                -->
-                               
-                           
+                                       <a class="dest_esc">Todos</a>
+                                        <a class="dest_esc">Pemba</a>
+                                        <a class="dest_esc">Nampula</a>
+                                        <a class="dest_esc">Maputo</a>
+                                        <a class="dest_esc">Matola</a>
+                                        <a class="dest_esc">Zambeze</a>
                               </div>
                             </div>
                         <!-- Tipo-->
@@ -344,7 +397,7 @@
                                   <a class="escolha">Caixa aberta</a>
                                   </div>
                                 </div>
-                        <button onclick="ola()">Pesquisar</button>
+                        <button class="status completed" onclick="ola()">Pesquisar</button>
                         <div style="display: flex; flex-direction: row; gap: 5%;">
                            
                            <form action="/add/back" method="post">
@@ -359,7 +412,7 @@
                                  <span>/ <%= qtotal %></span>
                             -->
 
-                          <form action="/add/next" method="post">
+                          <form action="/add/next" method="post" style="transform: translateX(20px);">
                             <button style="color: white;background-color: black; width: 30px;font-weight: bold;" type="submit" > > </button>
 
                           </form>
@@ -376,12 +429,12 @@
                       <thead>
                         <tr>
                           <th>Destino</th>
-                          <th><p style="transform: translateX(10px);"> Data</p> </th>
-                          <th><p style="transform: translateX(45px);">Hora de partida</p></th>
-                          <th>Duracao</th>
-                          <th>Autocarro</th>
-                          <th>Lotacao</th>
-                          <th>Bilhetes Restante</th>
+                          <th><p style="transform: translateX(10px);">Data de partida</p> </th>
+                          <th><p style="transform: translateX(-15px);">Hora de partida</p></th>
+                          <th><p style="transform: translateX(-40px);"> Duracao </p></th>
+                          <th><p style="transform: translateX(-50px);"> Autocarro </p></th>
+                          <th><p style="transform: translateX(-45px);"> Lotacao</p></th>
+                          <th><p style="transform: translateX(-55px);"> Vagas Restante</p> </th>
 
                         </tr>
                       </thead>
@@ -402,34 +455,35 @@
                                 </td>
                                  <!--<td>01-10-2021</td>--> 
                        <% let dt = new Date(docs[x].data)  %>
-                       <% let m= dt.getMonth()    
-                          let d=dt.getDate()      
-                          let a=dt.getFullYear() %>
+                       <% let m= dt.getMonth()+1;
+                   
+                          let d=dt.getDate();      
+                          let a=dt.getFullYear(); %>
                        <td> <p style="transform: translateX(-40px);"><%= (d+'/'+m+'/'+a) %></p> </td>
                        
                        <td>
-                        <p style="transform: translateX(-50px);"><%=  docs[x].hora_partida %> </p>
+                        <p style="transform: translateX(-70px);"><%=  docs[x].hora_partida %> </p>
                       </td>
 
                       <td>
-                        <p><%=  docs[x].duracao %> </p>
+                        <p style="transform: translateX(-60px);"><%=  docs[x].duracao %> </p>
                       </td>
 
                       <td>
-                        <p><%=  docs[x].autocarro %> </p>
+                        <p style="transform: translateX(-20px);" > <%=  docs[x].autocarro %> </p>
                       </td>
 
                       <td>
-                        <p><%=  docs[x].lotacao %> </p>
+                        <p style="transform: translateX(-60px);" ><%=  docs[x].lotacao %> </p>
                       </td>
 
                       <td>
                         <p><%=  docs[x].b_restante %> </p>
                       </td>
 
+                     <!--  //editar ben10-->
                                 <td>
-                                  <span class="status completed">Editar</span>
-                                 
+                                  <button style="transform: translateX(55px);" onclick="editar('<%=  docs[x]._id %>')" class="status completed">Editar</button>              
                                 </td>
                               </tr>
                              <% }%>
@@ -443,7 +497,7 @@
               </div>
             </div>
           </div>
-          <div class="table-data">
+          <div class="table-data" style="width:150vh;">
             <div class="todo">
               <div class="head">
                 <h3>Processos</h3>
@@ -489,7 +543,7 @@
       let dc = JSON.parse(daca);      
       
 
- console.log(dc);   
+ //console.log(dc);   
 
       function conv(e)
         {
@@ -596,6 +650,7 @@ function atv(ide) {
   let ptxt = document.getElementById('Epesq');
   let mesa = document.querySelector('#mesa');
 
+  //Registar Bilhete
      function respRegBilh() {
    
       let infor = document.getElementById('infor');
@@ -612,7 +667,29 @@ function atv(ide) {
          
         
       }
-  
+  //Editar Bilhete
+   
+  function respEditBilh() {
+   
+   let infor = document.getElementById('inforUp');
+   console.log(infor);
+   console.log(infor.value);
+    if(infor.value=="true")
+    {
+      console.log("Its true!");
+     return true;
+    }else
+    {
+      console.log("Its False!");
+
+     return false;
+    }
+
+      
+     
+   }
+
+
       function respBilhUpdt() {
    
                let infor = document.getElementById('infor-updt');

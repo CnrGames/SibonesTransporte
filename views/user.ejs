@@ -21,7 +21,7 @@
         <li class="active">
           <a class="btx" onclick="selectDoc('pc')">
             <i class="bx bxs-dashboard"></i>
-            <span class="text">Destino</span>
+            <span class="text" style="transform: translateX(-10px);">Destino</span>
           </a>
         </li>
         <li class="active">
@@ -44,35 +44,115 @@
       <nav>
         <i class="bx bx-menu"> </i>
       </nav>
+      <input id="nps" style="display: none;" value="pss">
       <div class="places">
         <div class="place-1">
           <span>Bilhetes Disponiveis</span>
 
-          <div id="idDoc" style="display: block">
+          <div id="idDoc" style="display: block; overflow: hidden;">
             <div class="head">
               <!-- <h3>Documentos</h3> --> 
               <div class="psqArea">
                 <div>
-                  <form onsubmit=" return resp();"  action="/user" method="post">
-                    <input  id="pesquisa" name="pesq" type="search"></input>
+                  <form onsubmit=" return resp();"  action="/user" method="post" style="display: flex;flex-direction: row;
+                  padding-top: 3%;">
+                    <input style="display: none;"  id="pesquisa" name="pesq" type="search" autocomplete="off"></input>
+                     <!-- pill -->
+
+
+                         <!-- Destino -->
+                         <div class="formCont1" style="padding-left: 25%;display: flex;">
+                      
+                          <a class="lstyle" style="margin-right: 5%;font-size: 15px;font-weight: bolder;">Destino</a>
+                          <div>
+                               <input class="iStyle" type="text" name="dest" id="upt_autoc" 
+                                   onselectstart="return false;"onmousedown="return false;"
+                                   unselectable="on" readonly  autocomplete="off" style="width: 250px;" />
+ 
+                                   <div style="position: relative;width: 0; height: 0;padding-top: 3px; ">
+                                            
+                                       <div class="dropdown-content">
+ 
+                                        <a class="dest_esc">Todos</a>
+                                        <a class="dest_esc">Pemba</a>
+                                        <a class="dest_esc">Nampula</a>
+                                        <a class="dest_esc">Maputo</a>
+                                        <a class="dest_esc">Matola</a>
+                                        <a class="dest_esc">Zambeze</a>
+                                        
+                                       </div> 
+                                      
+                                   </div>
+                                 </div>
+ 
+                       <!-- Fim prec -->
+                     </div>
+
+                      <!-- Carro -->
+                    <div class="formCont1" style="padding-left: 15%; display: none;" >
+                      <a class="lstyle" style="margin-right: 5%;font-size: 15px;font-weight: bolder; ">Autocarro</a>
+                      <div> 
+                         <input class="iStyle" type="text" name="autoType" id="upt_autoc" 
+                            onselectstart="return false;"onmousedown="return false;"
+                            unselectable="on" readonly  autocomplete="off" style="width: 250px;"/>
+
+                               <div style="position: relative;width: 0; height: 0;padding-top: 3px; ">
+                                        
+                                   <div class="dropdown-content">
+
+                                    
+                                       <a class="dest_esc">Todos</a>
+                                       <a class="dest_esc">Pequeno</a>
+                                       <a class="dest_esc">Medio</a>
+                                       <a class="dest_esc">Grande</a>
+                                       
+                                    
+                                   </div> 
+                                  
+                               </div>
+                          </div>
+
+                    </div>
+
+                 
+
+
+                     <!-- Preco -->
+                     <div class="formCont1" style="padding-left: 10%;display: none;">
+                      <div style="display: flex; font-size: 10px;flex-direction: row;">
+                        <a class="lstyle" style="width: 30px;font-size: 15px;font-weight: bolder;">De</a>
+                        <input name="de" type="number" autocomplete="off"/>
+                      </div>
+
+                      <div style="display: flex; flex-direction: row;">
+                        <a class="lstyle" style="width: 30px;font-size: 15px;font-weight: bolder;">Ate</a>
+                        <input name="ate" type="number" autocomplete="off"/>
+
+                      </div>
+                    
+                    </div>
+
+                  
+
                     <input id="cod" name="categ" type="text" style="display: none" ></input>
                     <input id='dpEmp0'name="emp" type="text" style="display: none" ></input>
 
                     
+                    <input id = "tidx" name = 'tidx' style="display: none;" value="<%- tidx%>"/>
 
-                    <button class="btnC" >Pesquisar</button>
+                    <button class="btnC" style="margin-left: 6%;" >Pesquisar</button>
                   </form>
                 </div>
               </div>
             </div>
             <table>
               <thead>
-                <tr>
+                <tr >
                   <th>
-                    <a style="margin-left: 200%"> Destino </a>
+                    <a style="margin-left: 100% ;transform: translateX(-100px);"> Destino </a>
                   </th>
                   <th>
-                    <a style="margin-left: 800%"> Data </a>
+                    <a style="margin-left: 600%"> Data </a>
                   </th>
                 </tr>
               </thead>
@@ -80,6 +160,91 @@
             </table>
             <div class="pasta">
               <!-- Pesquisa!-->
+               
+              <div  id="telaVisa" style="width:0;height:0; display: none; ">
+                <!---->
+                <div style="
+                     width: 490px;
+                     height: 300px; 
+                     position: absolute;
+                     padding-left: 15%;
+                     transform: translateX(15%) translateY(-50px);
+                     border-radius: 15px;
+                     z-index: 3;                
+                     background-color: green;
+                     outline: solid;
+                     outline-offset: 10px;
+                     outline-style: solid;
+                     outline-color: black;
+                     border-style: solid; 
+                     border-width:5px;
+                     ">
+
+<div class="formRow styleGap"style="padding-top: 40px;" >
+                   
+  <div class="formCont fpadd" >
+      <p class="lstyle" id="chernoFilho" style="font-size: 20px;">Preco: XoXo Mzn</p>
+  </div>
+
+
+</div>
+
+            <div class="formRow styleGap" ">
+                   
+                     <div class="formCont fpadd" >
+                         <p class="lstyle" style="font-size: 20px;">Numero de acento</p>
+                          <input class="iStyle"  type="number" id ="upt_ac" name="durac"   autocomplete="off"/>
+                     </div>
+
+
+            </div>
+
+            <div class="formRow styleGap">
+                    
+                     <div class="formCont fpadd" style="padding-bottom: 15px;">
+                         <p class="lstyle" style="font-size: 20px;">Password da conta</p>
+                          <input class="iStyle"  type="password" id ="upt_pc" name="durac"   autocomplete="off"/>
+                     </div>
+                   
+                   
+                   
+            
+             </div>
+
+             <div class="formRow styleGap">
+                    
+              <div class="formCont " >
+                  <form onsubmit=" return comprar();" action="/book" method="post" >
+                    
+                    <input id="comNr" name="p" value="xoxo" style="display:none;">
+                    <input id="psbid" name="bId" value="xoxo" style="display:none;">
+                    <input id="comAC" name="acn" value="xoxo" style="display:none;">
+                   <button type="submit" onclick="comprar()" class="btnC" >  Comprar</button>
+   
+                  </form>
+              
+               </div>
+            
+               <div class="formCont" >
+               
+                <button onclick="cancelar()" class="btnC" > Cancelar</button>
+              
+               </div>
+            
+     
+      </div>
+
+
+                </div>
+
+                <div style="height: 1000px; 
+                position: absolute;
+                z-index: 1;
+                transform: translateY(-100px);
+                background-color: rgba(255, 0, 0, 0);
+                width: 1000px;"></div>
+
+              </div>
 
               <!-- Lista de resul-->
               <div class="item-cont">
@@ -87,22 +252,25 @@
                   <div>
                     <tbody>
                        <% for (let x =0;x<docs.length;x++){%>
-                      <tr>
+                      <tr class="bcontent" value="<%= JSON.stringify(docs[x])%>">
+                        <!-- style="background-color: red;" -->
                         <td>
                           <a><%=  docs[x].destino %> </a>
                         </td>
                        <!--<td>01-10-2021</td>--> 
                        <% let dt = new Date(docs[x].data)  %>
-                       <% let m= dt.getMonth()    
-                          let d=dt.getDate()      
-                          let a=dt.getFullYear() %>
+                       <% let m= dt.getMonth()+1;    
+                          let d=dt.getDate();     
+                          let a=dt.getFullYear()%>
                        <td> <span><%= (d+'/'+m+'/'+a) %></span> </td>
                         <td>
-                          <form action="/book" method="post">
+
+                         <!-- <form action="/book" method="post"> --> 
                                  <input style="display: none;" name="bId" value="<%=  docs[x]._id %>" >
                           
-                          <button class="btnC" type="submit" onclick="alertar(`<%=  docs[x]._id %>`)">Comprar</button>
-                        </form>
+                          <button class="btnC" type="submit" onclick="alertar(`<%= JSON.stringify(docs[x])%>`)"  >Comprar</button>
+                                                <!--  </form> -->
+
                         </td>
                       </tr>
                       <% }%>
@@ -116,7 +284,14 @@
 
         <div class="place-2">
           <div class="cenas">
-            <div class="p"><h3 style ="color: wheat;">clica no botao abaixo pra fazer Upload de documento</h3></div>
+            <div class="p " id="ts" style="padding-left: 4%; padding-top: 8%;">
+              <h3 class="opc" >Hora de partida</h3>
+              <h3 class="opc" >Data de partida</h3>
+              <h3 class="opc" >Duracao da viagem</h3>
+              <h3 class="opc" >Tipo de transporte</h3>
+              <h3 class="opc" >Preco</h3>
+
+            </div>
            <!-- 
             <div class="download" onclick="abrir()">
               <img  src="download.png" alt="" class="img" />

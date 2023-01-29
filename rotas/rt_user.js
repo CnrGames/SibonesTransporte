@@ -1,6 +1,12 @@
 const rt = require('express').Router();
 const { ObjectId } = require('mongodb');
 const pdfServ = require('./pdfk');
+const PDFDocument = require('pdfkit');
+const PDFKitHTML = require('@shipper/pdfkit-html-simple');
+pdf = require('express-pdf');
+const qrcode = require('qrcode');
+
+const mitemer = require('./pTemer');
 
 function sutra(extMsg, extExpress, urlParser) {
   //console.log(ak,az.locals.usa);
@@ -11,7 +17,7 @@ function sutra(extMsg, extExpress, urlParser) {
     console.log('oi');
     return 'nada';
   }
-
+  let tlscrn = '';
   //Doc Fetcher
   function docQF(n) {
     let msg = '';
@@ -39,7 +45,6 @@ function sutra(extMsg, extExpress, urlParser) {
 
   function docU(n) {
     let msg = '';
-    //console.log('Negativoooooooooooooooooooooooooooooo!');
     switch (n) {
       case 'Relatorio de Contas':
         msg = 'rela';
@@ -60,39 +65,129 @@ function sutra(extMsg, extExpress, urlParser) {
   }
 
   //--------------------Usuarios
-
+  let docR = [];
+  let macD = { b_restante: { $gt: 0 } };
+  //Imprimir
   rt.get('/recibo', urlParser, (req, res, next) => {
-    const stream = res.writeHead(200, {
-      'Content-Type': 'application/pdf',
-      'Content-Disposition': 'attachment;filename=invoice.pdf',
-    });
+    let img1 = '';
+    if (req.app.locals.user != null) {
+      let qrImg = qrcode.toDataURL(
+        `Compra do Bilhete para ${req.app.locals.destinop},efectuado com exito `,
+        function (err, url) {
+          img1 = url;
+
+          let conta = mitemer.exTemer(
+            req.app.locals.user,
+            '30-01-2023',
+            req.app.locals.valorp,
+            req.app.locals.destinop,
+            url
+          );
+          res.pdfFromHTML({
+            filename: 'generated.pdf',
+            htmlContent: conta,
+          });
+        }
+      );
+    } else {
+      res.redirect('/user');
+    }
+
     /*
-    pdfServ.buildPdf(
-      (chunk) => stream.write(chunk),
-      () => stream.end()
-    );
-*/
+    req.app.locals.datap = listar[0].data;
+    req.app.locals.destinop = listar[0].destino;
+    req.app.locals.valorp = listar[0].valor;
+    req.app.locals.nomep = 'Avatar';
+    */
   });
+
+  rt.get('/init', urlParser, (req, res, next) => {
+    res.render('pinicial');
+  });
+  let tidxI = '';
+  //Get users
+
+  function apsrc(data) {
+    let beta = {
+      autocarro: `${data.autoType}`,
+      destino: `${data.dest}`,
+      data: `${data.data}`,
+      b_restante: { $gt: 0 },
+    };
+
+    let betaf = {};
+    let passe = false;
+
+    if (data.tidx == 'dt') {
+      betaf = {
+        valor: { $gte: parseInt(data.de), $lte: parseInt(data.ate) },
+        b_restante: { $gt: 0 },
+      };
+
+      /*{ b_restante: { $gt: 0 }}*/
+    } else {
+      for (let x = 0; x < Object.keys(beta).length; x++) {
+        //if (beta[bf].value != undefined && beta[bf].value.toString().length > 0) {
+        if (
+          Object.values(beta)[x].toString().toLowerCase() != 'undefined' &&
+          Object.values(beta)[x].toString().toLowerCase() != 'nan' &&
+          Object.values(beta)[x].toString().length > 0
+        ) {
+          if (Object.values(beta)[x].toString().toLowerCase() == 'todos') {
+            passe = true;
+          } else {
+            betaf[Object.keys(beta)[x]] = Object.values(beta)[x];
+          }
+        }
+
+        //   console.log(betaf);
+      }
+
+      if (Object.keys(betaf).length == 1) {
+        if (passe == false) {
+          betaf = { border: '' };
+        }
+      }
+    }
+
+    console.log(betaf);
+    //console.log(data);
+
+    return betaf;
+  }
 
   rt.get('/user', urlParser, (req, res) => {
     let lta = [];
-    let docR = [];
-    let nemp = 'nada'; // req.app.locals.user;
+    let nemp = req.app.locals.user;
     let dCateg = docQF(req.body.categ);
-    console.log(dCateg + ' :User_Final');
+
+    if (docR.length > 0) {
+      docR.length = 0;
+      console.log('--------Brunox-----------');
+      console.log(macD);
+      req.ddb
+        .collection('Bilhetes')
+        .find(macD)
+        .sort({ destino: 1 })
+        .collation({ locale: 'en', caseLevel: true })
+        .forEach((d) => {
+          docR.push(d);
+        });
+    }
 
     req.db
-      .collection('comp')
-      .find()
-      .sort({ nome: 1 })
+      .collection('Bilhetes')
+      .find({ b_restante: { $gt: 0 } })
+      .sort({ destino: 1 })
       .forEach((cs) => lta.push(cs))
       .then(() => {
         //----------------------------------------------
         res.render('user', {
-          natax: 'sibas', //userName.nome,
+          natax: nemp.nome, //userName.nome,
           ps: req.body.pesq,
           ctg: dCateg,
-          docs: [],
+          tidx: tidxI,
+          docs: docR,
           emid: req.body.cdI,
         });
 
@@ -106,12 +201,15 @@ function sutra(extMsg, extExpress, urlParser) {
 
   rt.post('/user', urlParser, (req, res) => {
     const emp = req.body;
-    let userName = 'Sibas1'; // req.app.locals.user;
+    let nemp = req.app.locals.user;
 
+    let userName = req.app.locals.user.nome;
+    tidxI = emp.tidx;
     let dCateg = docQF(req.body.categ);
 
     let lta = [];
-    let docR = [];
+    docR.length = 0;
+
     if (req.body.pesq == undefined) {
       req.body.pesq = '';
     }
@@ -149,20 +247,26 @@ function sutra(extMsg, extExpress, urlParser) {
         return { data: `${req.body.pesq}` };
       }
     }
-    let p = {}; //pesquisa(req.body.pesq);
+    macD = apsrc(req.body);
 
     req.ddb
       .collection('Bilhetes')
-      .find({ b_restante: { $gt: 0 } })
+      .find(macD)
       .sort({ destino: 1 })
       .collation({ locale: 'en', caseLevel: true })
       .forEach((d) => {
         docR.push(d);
       })
+      /*
+      .then(() => {
+        res.redirect(`/user?t=${tidxI}`);
+      })*/
+
       .then((e) => {
         res.render('user', {
-          natax: 'sibas', //userName.nome,
+          natax: nemp.nome, //userName.nome,
           ps: req.body.pesq,
+          tidx: tidxI,
           ctg: req.body.categ,
           docs: docR,
         });
@@ -183,25 +287,42 @@ function sutra(extMsg, extExpress, urlParser) {
     // console.log(nego);
   });
 
+  //Comprar bilhete
   rt.post('/book', urlParser, (req, res) => {
     const bilh = req.body;
     let listar = [];
     let bdispo = 'nada';
     req.ddb
       .collection('Bilhetes')
-      .find({ _id: ObjectId(`${bilh.bId}`) })
-      .sort({ destino: 1 })
-      .collation({ locale: 'en', caseLevel: true })
+      .find({ _id: ObjectId(bilh.bId) })
       .forEach((d) => {
         listar.push(d);
+        // console.log(listar);
       })
       .then((e) => {
         // res.send(JSON.stringify(req.body));
         bdispo = listar[0].b_restante;
+        console.log('Dispo: ' + bdispo);
+        console.log('Final: ' + bdispo);
+
         if (bdispo > 0) {
-          return req.ddb.collection('Bilhetes').then(() => {
-            res.send(JSON.stringify(listar[0]));
-          });
+          return req.ddb
+            .collection('Bilhetes')
+            .updateOne(
+              { _id: ObjectId(bilh.bId) },
+              {
+                $set: { b_restante: bdispo - 1 },
+              }
+            )
+            .then(() => {
+              req.app.locals.datap = listar[0].data;
+              req.app.locals.destinop = listar[0].destino;
+              req.app.locals.valorp = listar[0].valor;
+              req.app.locals.nomep = 'Avatar';
+
+              res.redirect('/recibo');
+              // res.send(JSON.stringify(listar[0]));
+            });
         } else {
           res.send(JSON.stringify('Indisponivel'));
         }
@@ -214,35 +335,8 @@ function sutra(extMsg, extExpress, urlParser) {
       });
   });
 
-  rt.post('/add/doc', urlParser, (req, res) => {
-    const emp = req.body;
-    let nemp = req.app.locals.user;
-
-    let dCateg = docU(req.body.categ);
-    //cnrGames
-    req.db
-      .collection(dCateg)
-      .insertOne({
-        tipo: `${req.body.titulo}`,
-        status: `${req.body.status}`,
-        emp: `${nemp.id}`,
-        data: `${req.body.data}`,
-        add: '',
-      })
-      .then((resul) => {
-        //res.status(201).json(resul);
-        res.redirect('/user');
-      })
-      .catch((err) => {
-        res.status(500).json({ erro: 'Falha na coneccao!' });
-      });
-
-    // let { nego } = req.body;
-    // console.log(nego);
-  });
-
   rt.get('/*', (req, res) => {
-    res.sendStatus(404);
+    res.redirect('/init');
   });
 
   return rt;

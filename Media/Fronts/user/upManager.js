@@ -1,41 +1,28 @@
-
-
-
 let pai = document.getElementById('pai');
 
-
-
-function fechar()
-{
-  pai.style.display ='none';
+function fechar() {
+  pai.style.display = 'none';
 }
 
-function abrir()
-{
-  pai.style.display ='block';
+function abrir() {
+  pai.style.display = 'block';
 }
-
-
-
-
-
 
 //////////////////////////////////////Inter
 
-let anoI = document.getElementById("anoB");
-let diaI = document.getElementById("diaB");
-let mesI = document.getElementById("mesB");
-let docI = document.getElementById("docB");
+let anoI = document.getElementById('anoB');
+let diaI = document.getElementById('diaB');
+let mesI = document.getElementById('mesB');
+let docI = document.getElementById('docB');
 
-let es = document.querySelectorAll(".escolha");
-let lista = document.querySelector(".item-cont");
-let pesq = document.querySelector("#pesquisa");
+let lista = document.querySelector('.item-cont');
+let pesq = document.querySelector('#pesquisa');
 
 function createItem(nome) {
-  let Item = document.createElement("div");
-  let subNome = document.createElement("h2");
+  let Item = document.createElement('div');
+  let subNome = document.createElement('h2');
 
-  Item.classList.add("itemB");
+  Item.classList.add('itemB');
 
   subNome.innerText = nome;
 
@@ -44,43 +31,40 @@ function createItem(nome) {
   return Item;
 }
 
-let resTemplate = "";
+let resTemplate = '';
 
-function ola() {
- 
-}
+function ola() {}
 
+////Dokas zone
 
+let d_esc = document.querySelectorAll('.dest_esc');
 
-let Nes = Array.from(es);
+let dest_esc_data = Array.from(d_esc);
 
-Nes.forEach((e, i) => {
-  e.addEventListener("click", () => {
-    if (e.parentNode.parentNode.querySelector("#docB")) {
-      //console.log("olaaaaaaaaaaaaaaaaa");
-      let pai = e.parentNode.parentNode.querySelector("#docB");
+//Click
+dest_esc_data.forEach((e, i) => {
+  e.addEventListener('click', () => {
+    let pai = e.parentNode.parentNode.parentNode.querySelector('.iStyle');
+    pai.value = e.innerHTML;
+    console.log(pai);
 
-      pai.value = e.innerHTML;
-    } else {
-      let pai = e.parentNode.parentNode.querySelector(".dropbtn");
-      pai.value = e.innerHTML;
-    }
-
-    let pai = e.parentNode.parentNode.querySelector(".dropdown-content");
-    pai.style.display = "none";
+    //ji();
   });
 });
 
-////Cnr DroZone
+let alliStyle = Array.from(document.querySelectorAll('.iStyle'));
+//console.log(alliStyle);
+alliStyle.forEach((e, i) =>
+  e.addEventListener('mouseover', () => {
+    if (e.parentNode.querySelector('.dropdown-content')) {
+      e.parentNode.querySelector('.dropdown-content').style.display = 'block';
 
-let bts = Array.from(document.querySelectorAll(".dropbtn"));
-//console.log(bts);
-bts.forEach((e, i) =>
-  e.addEventListener("mouseover", () => {
-    if (e.parentNode.querySelector(".dropdown-content")) {
-      e.parentNode.querySelector(".dropdown-content").style.display = "block";
-      e.parentNode.addEventListener("mouseleave", () => {
-        e.parentNode.querySelector(".dropdown-content").style.display = "none";
+      e.parentNode.addEventListener('click', () => {
+        e.parentNode.querySelector('.dropdown-content').style.display = 'none';
+      });
+
+      e.parentNode.addEventListener('mouseleave', () => {
+        e.parentNode.querySelector('.dropdown-content').style.display = 'none';
       });
       //console.log(e);
       //console.log(e.parentNode.querySelector(".dropdown-content"));
@@ -94,7 +78,7 @@ function resp1() {
   if (docI.value.length > 0) {
     return true;
   } else {
-    alert("Escolha Tipo de documento!!!!");
+    alert('Escolha Tipo de documento!!!!');
 
     return false;
   }

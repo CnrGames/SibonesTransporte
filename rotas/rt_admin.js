@@ -1,6 +1,6 @@
 const rt = require('express').Router();
 const { json } = require('express');
-
+const { ObjectId } = require('mongodb');
 const bodyParser = require('body-parser');
 
 const ex = require('express');
@@ -35,6 +35,8 @@ let docR = [];
 
 let txtPesquisa = '';
 let txdfunCategor = '';
+let txdTipo = '';
+
 let txctg = '';
 let txemp = '';
 let telaId = '';
@@ -70,28 +72,28 @@ function getDate(inputD) {
 function dbQuerries(req) {
   //pag
   //categ
-
+  /*
   if (req.query.c != null && req.query.c.length > 0) {
     console.log('TUdo');
 
     switch (req.query.c) {
       case 'rl':
-        txdfunCategor = 'Relatorio';
+        eraFuncategor = 'Relatorio';
         break;
 
       case 'pcm':
-        txdfunCategor = 'Pagamento de Cmpostos';
+        eraFuncategor = 'Pagamento de Cmpostos';
         break;
 
       case 'pc':
-        txdfunCategor = 'Processos Correntes';
+        eraFuncategor = 'Processos Correntes';
         break;
 
       case 'pt':
-        txdfunCategor = 'Pendentes';
+        eraFuncategor = 'Pendentes';
         break;
     }
-  }
+  }*/
   //?id=someID&product=bag
 
   if (req.query.t != null && req.query.t.length > 0) {
@@ -110,95 +112,6 @@ function dbQuerries(req) {
     }
   }
 }
-
-function getDocs(req, res, redir) {
-  docR.length = 0;
-  req.ddb
-    .collection('Bilhetes')
-    .find(p)
-    .sort({ destino: 1 })
-    .collation({ locale: 'en', caseLevel: true })
-    .skip(pagina * perPage)
-    .limit(perPage)
-    .forEach((d) => {
-      docR.push(d);
-    })
-    .then(() => {
-      //console.log('aa '+tmn);
-      return req.ddb
-        .collection('Bilhetes')
-        .countDocuments(p)
-        .then((e) => {
-          tmn = e;
-          paginaTotal = parseInt(tmn / perPage);
-          if (perPage == paginaTotal) {
-            paginaTotal--;
-          }
-          console.log('Testeeee:' + tmn);
-        });
-      //console.log('bb '+tmn);
-    })
-    .then((e) => {
-      if (redir == 'y') {
-        redirecionar(res);
-        res.status(200);
-      }
-    })
-    .catch((e) => {
-      res
-        .status(500)
-        .json({ error: 'erro', ish: req.body, tama: tmn, erra: e });
-    });
-}
-
-//
-rt.get('/admin', ucd, (req, res) => {
-  req.url = req.url + `?id=cn`;
-  //http://localhost:3000/admin?c=rl&t=doc
-  dbQuerries(req);
-  let nomey = req.query.nome || 'nada';
-  let apld = req.query.apelido || 'nadax';
-
-  curLst.length = 0;
-
-  //console.log(req.body);
-  console.log('txt: ' + telaId);
-  // console.log(`resultado: ${nomey},${apld}`);
-  if (telaId == '') {
-    telaId = 'users';
-  }
-  let tipoBilhete = docQ(req.body.autoType);
-  //console.log("Limite: "+req.mk);
-  if (req.body.pg == undefined || req.body.pg == '') {
-    req.body.pg = 'users';
-  }
-
-  req.db
-    .collection('User')
-    .find()
-    .sort({ nome: 1 })
-    .forEach((cs) => curLst.push(cs))
-    .then(() => {
-      //console.log("T actual: "+tmn);
-      //----------------------------------------------
-      res.render('adminFront', {
-        natax: curLst,
-        ps: txtPesquisa,
-        fctg: txdfunCategor,
-        docs: docR,
-        emp: txemp,
-        pg: telaId,
-        qtotal: paginaTotal,
-        ipag: pagina,
-        //pg
-      });
-      res.status(200);
-    })
-
-    .catch(() => {
-      res.status(500).json({ err: 'could not pD ' });
-    });
-});
 
 function convQuerries(vari, inpot) {
   let outp;
@@ -263,6 +176,186 @@ function redirecionar(res) {
   }
 }
 
+function apbi(data) {
+  let beta = {
+    destino: `${data.destino}`,
+    hora_partida: `${data.horap}`,
+    duracao: `${data.durac}`,
+    autocarro: `${data.autoc}`,
+    lotacao: parseInt(data.lotac),
+    valor: `${data.preco}`,
+    b_restante: parseInt(data.vagas),
+    data: `${data.datasp}`,
+  };
+
+  let betaf = {};
+
+  for (let x = 0; x < Object.keys(beta).length; x++) {
+    //if (beta[bf].value != undefined && beta[bf].value.toString().length > 0) {
+    if (
+      Object.values(beta)[x].toString().toLowerCase() != 'undefined' &&
+      Object.values(beta)[x].toString().toLowerCase() != 'nan' &&
+      Object.values(beta)[x].toString().length > 0
+    ) {
+      betaf[Object.keys(beta)[x]] = Object.values(beta)[x];
+    }
+
+    //   console.log(betaf);
+  }
+
+  console.log(betaf);
+
+  return betaf;
+}
+
+function apbii(data) {
+  let beta = {
+    autocarro: `${data.autoType}`,
+    destino: `${data.dest}`,
+  };
+
+  let betaf = {};
+
+  for (let x = 0; x < Object.keys(beta).length; x++) {
+    //if (beta[bf].value != undefined && beta[bf].value.toString().length > 0) {
+    if (
+      Object.values(beta)[x].toString().toLowerCase() != 'undefined' &&
+      Object.values(beta)[x].toString().toLowerCase() != 'nan' &&
+      Object.values(beta)[x].toString().length > 0
+    ) {
+      if (Object.values(beta)[x].toString().toLowerCase() == 'todos') {
+      } else {
+        betaf[Object.keys(beta)[x]] = Object.values(beta)[x];
+      }
+    }
+
+    //   console.log(betaf);
+  }
+
+  console.log(betaf);
+
+  return betaf;
+}
+
+function getDocs(req, res, redir) {
+  docR.length = 0;
+  req.ddb
+    .collection('Bilhetes')
+    .find(p)
+    .sort({ destino: 1 })
+    .collation({ locale: 'en', caseLevel: true })
+    .skip(pagina * perPage)
+    .limit(perPage)
+    .forEach((d) => {
+      docR.push(d);
+    })
+    .then(() => {
+      //console.log('aa '+tmn);
+      return req.ddb
+        .collection('Bilhetes')
+        .countDocuments(p)
+        .then((e) => {
+          tmn = e;
+          paginaTotal = parseInt(tmn / perPage);
+          if (perPage == paginaTotal) {
+            paginaTotal--;
+          }
+          console.log('Testeeee:' + tmn);
+        });
+      //console.log('bb '+tmn);
+    })
+    .then((e) => {
+      if (redir == 'y') {
+        redirecionar(res);
+        res.status(200);
+      }
+    })
+    .catch((e) => {
+      res
+        .status(500)
+        .json({ error: 'erro', ish: req.body, tama: tmn, erra: e });
+    });
+}
+
+//
+rt.get('/admin', ucd, (req, res) => {
+  req.url = req.url + `?id=cn`;
+  dbQuerries(req);
+  let nomey = req.query.nome || 'nada';
+  let apld = req.query.apelido || 'nadax';
+
+  console.log(req.app.locals.user);
+  curLst.length = 0;
+  if (req.app.locals.user.role == 'adm') {
+    if (telaId == '') {
+      telaId = 'users';
+    }
+    let tipoBilhete = docQ(req.body.autoType);
+    if (req.body.pg == undefined || req.body.pg == '') {
+      req.body.pg = 'users';
+    }
+
+    if (docR.length > 0) {
+      docR.length = 0;
+      req.ddb
+        .collection('Bilhetes')
+        .find(p)
+        .sort({ destino: 1 })
+        .collation({ locale: 'en', caseLevel: true })
+        .skip(pagina * perPage)
+        .limit(perPage)
+        .forEach((d) => {
+          docR.push(d);
+        })
+        .then(() => {
+          //console.log('aa '+tmn);
+          return req.ddb
+            .collection('Bilhetes')
+            .countDocuments(p)
+            .then((e) => {
+              tmn = e;
+              paginaTotal = parseInt(tmn / perPage);
+              if (perPage == paginaTotal) {
+                paginaTotal--;
+              }
+              console.log('Testeeee:' + tmn);
+            });
+          //console.log('bb '+tmn);
+        });
+    }
+
+    //inuyasha
+    req.db
+      .collection('User')
+      .find()
+      .sort({ nome: 1 })
+      .forEach((cs) => curLst.push(cs))
+      .then(() => {
+        //console.log("T actual: "+tmn);
+        //----------------------------------------------
+        res.render('adminFront', {
+          natax: curLst,
+          ps: txtPesquisa,
+          fctg: txdfunCategor,
+          ftype: txdTipo,
+          docs: docR,
+          emp: txemp,
+          pg: telaId,
+          qtotal: paginaTotal,
+          ipag: pagina,
+          //pg
+        });
+        res.status(200);
+      })
+
+      .catch(() => {
+        res.status(500).json({ err: 'could not pD ' });
+      });
+  } else {
+    res.redirect('/user');
+  }
+});
+
 ///Get all Users
 rt.post('/admin', ucd, (req, res) => {
   const emp = req.body;
@@ -270,13 +363,13 @@ rt.post('/admin', ucd, (req, res) => {
   //Mod txtctg
   txtPesquisa = req.body.pesq;
   txdfunCategor = req.body.autoType;
+  txdTipo = req.body.dest;
   txctg = tipoBilhete;
   txemp = req.body.dest;
   telaId = req.body.pg;
   let customData = '';
   pagina = 0;
 
-  console.log('Obito: ' + tmn);
   console.log(JSON.stringify(req.body));
 
   let autoCar = '';
@@ -284,10 +377,10 @@ rt.post('/admin', ucd, (req, res) => {
   if (req.body.pg == undefined || req.body.pg == '') {
     req.body.pg = 'users';
   }
-  //console.log("RESuuu:" + req.body.pesq);
   if (req.body.pesq == undefined) {
     req.body.pesq = '';
   }
+
   function pesquisa(n) {
     if (req.body.pesq == '' && req.body.autoType.length <= 0) {
       console.log('a');
@@ -330,7 +423,7 @@ rt.post('/admin', ucd, (req, res) => {
       return { data: `${req.body.pesq}` };
     }
   }
-  p = pesquisa(req.body.pesq);
+  p = apbii(req.body);
 
   getDocs(req, res, 'y');
 });
@@ -344,49 +437,122 @@ rt.post('/add/url', ucd, (req, res) => {
   redirecionar(res);
 });
 
-///Register Users
-///
-rt.post('update/bilhete', ucd, (req, res) => {
-  const emp = req.body;
+//Deletar Ticket
+rt.post('/dell/bilhete', ucd, (req, res) => {
+  const tick = req.body;
+  if (ObjectId.isValid(tick.tickId)) {
+    req.db
+      .collection('Bilhetes')
+      .deleteOne({ _id: ObjectId(`${tick.tickId}`) })
+      .then((resul) => {
+        //res.sendStatus(tick.tickId);
+        ///Fast Update Dos Dados
 
-  /* 
-  
-   .updateOne(
-      { _id: ObjectId(`${bilh.bId}`) },
-      { $set: { b_restante: bdispo - 1 } }
-    )
-
-  */
-
-  //cnrGames
-  req.db
-    .collection('Bilhetes')
-    .insertOne({
-      destino: `${req.body.destino}`,
-      hora_partida: `${req.body.horap}`,
-      duracao: `${req.body.durac}`,
-      autocarro: `${req.body.autoc}`,
-      lotacao: parseInt(req.body.lotac),
-      valor: `${req.body.preco}`,
-      b_restante: parseInt(req.body.vagas),
-      data: `${req.body.datasp}`,
-    })
-    .then((resul) => {
-      //res.status(201).json(resul);
-      res.redirect('/admin');
-    })
-    .catch((err) => {
-      res.status(500).json({ erro: 'Falha na coneccao!' });
-    });
-
-  // let { nego } = req.body;
-  // console.log(nego);
+        docR.length = 0;
+        req.ddb
+          .collection('Bilhetes')
+          .find(p)
+          .sort({ destino: 1 })
+          .collation({ locale: 'en', caseLevel: true })
+          .skip(pagina * perPage)
+          .limit(perPage)
+          .forEach((d) => {
+            docR.push(d);
+          })
+          .then(() => {
+            //console.log('aa '+tmn);
+            return req.ddb
+              .collection('Bilhetes')
+              .countDocuments(p)
+              .then((e) => {
+                tmn = e;
+                paginaTotal = parseInt(tmn / perPage);
+                if (perPage == paginaTotal) {
+                  paginaTotal--;
+                }
+              });
+            //console.log('bb '+tmn);
+          })
+          .then((e) => {
+            res.redirect('/admin?t=doc');
+          })
+          .catch((e) => {
+            res.status(500).json({ error: 'Dado nao encontrado' });
+          });
+      })
+      .catch((err) => {
+        res.status(500).json({ erro: 'Estamos em manutencao!' });
+      });
+  } else {
+    res.send('Bilhete inexistente');
+  }
 });
+
+//Update Ticket
+rt.post('/upa/bilhete', ucd, (req, res) => {
+  const tick = req.body.tickId;
+  let pb = apbi(req.body);
+  console.log('ticket: ' + tick);
+  //res.send(p);
+  if (ObjectId.isValid(tick)) {
+    req.db
+      .collection('Bilhetes')
+      .updateOne(
+        { _id: ObjectId(tick) },
+        {
+          $set: pb,
+        }
+      )
+      .then((resul) => {
+        ///Fast Update Dos Dados
+
+        docR.length = 0;
+        req.ddb
+          .collection('Bilhetes')
+          .find(p)
+          .sort({ destino: 1 })
+          .collation({ locale: 'en', caseLevel: true })
+          .skip(pagina * perPage)
+          .limit(perPage)
+          .forEach((d) => {
+            docR.push(d);
+          })
+          .then(() => {
+            //console.log('aa '+tmn);
+            return req.ddb
+              .collection('Bilhetes')
+              .countDocuments(p)
+              .then((e) => {
+                tmn = e;
+                paginaTotal = parseInt(tmn / perPage);
+                if (perPage == paginaTotal) {
+                  paginaTotal--;
+                }
+              });
+            //console.log('bb '+tmn);
+          })
+          .then((e) => {
+            res.redirect('/admin?t=doc');
+          })
+          .catch((e) => {
+            res.status(500).json({ error: 'Dado nao encontrado' });
+          });
+
+        //res.status(201).json(resul);
+      })
+      .catch((err) => {
+        res.status(500).json({ erro: 'Falha na Actualizacao!' });
+      });
+  } else {
+    res.send('Bilhete inexistente');
+  }
+});
+
+///Register Bilhete
 
 rt.post('/add/bilhete', ucd, (req, res) => {
   const emp = req.body;
 
-  //cnrGames
   req.db
     .collection('Bilhetes')
     .insertOne({
@@ -395,7 +561,7 @@ rt.post('/add/bilhete', ucd, (req, res) => {
       duracao: `${req.body.durac}`,
       autocarro: `${req.body.autoc}`,
       lotacao: parseInt(req.body.lotac),
-      valor: `${req.body.preco}`,
+      valor: parseInt(`${req.body.preco}`),
       b_restante: parseInt(req.body.vagas),
       data: `${req.body.datasp}`,
     })
@@ -406,9 +572,6 @@ rt.post('/add/bilhete', ucd, (req, res) => {
     .catch((err) => {
       res.status(500).json({ erro: 'Falha na coneccao!' });
     });
-
-  // let { nego } = req.body;
-  // console.log(nego);
 });
 
 rt.post('/add/nego', ucd, (req, res) => {
@@ -422,32 +585,36 @@ rt.post('/add/nego', ucd, (req, res) => {
       nuit: `${req.body.nuitx}`,
     })
     .then((resul) => {
-      //res.status(201).json(resul);
       res.redirect('/admin');
     })
     .catch((err) => {
       res.status(500).json({ erro: 'Falha na coneccao!' });
     });
-
-  // let { nego } = req.body;
-  // console.log(nego);
 });
 
-//next
+//Next Tickets
 rt.post('/add/back', ucd, (req, res) => {
-  console.log('back');
-  if (pagina > 0) {
-    pagina--;
+  if (docR.length > 0) {
+    if (pagina > 0) {
+      pagina--;
+    }
+    getDocs(req, res, '');
+    redirecionar(res);
+  } else {
+    res.redirect('/admin?t=doc');
   }
-  getDocs(req, res, '');
-  redirecionar(res);
 });
+
 rt.post('/add/next', ucd, (req, res) => {
-  if (pagina <= paginaTotal - 1) {
-    pagina++;
+  if (docR.length > 0) {
+    if (pagina <= paginaTotal - 1) {
+      pagina++;
+    }
+    getDocs(req, res, '');
+    redirecionar(res);
+  } else {
+    res.redirect('/admin?t=doc');
   }
-  getDocs(req, res, '');
-  redirecionar(res);
 });
 
 module.exports = rt;

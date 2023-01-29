@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="login_style.css" />
+
+    <link rel="stylesheet" href="check.css" />
+
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registo</title>
+  </head>
+  <body>
+    <span style="background-color: black; word-wrap: none; position: static">
+    </span>
+    <form onsubmit=" return resp();"  class="conteiner" action="/reg"  method="post">
+      <div class="content1"></div>
+      <div class="login-form">
+        <h1>Registo</h1>
+        <input
+          id="nomex"
+          style="display: none"
+          stg="<%= JSON.stringify(natax)%>"
+        />
+        <p>Nome</p>
+        <input
+          id="nome"
+          type="text"
+          required
+          autocomplete="off"
+          name="user"
+          placeholder="Nome do usuario"
+        />
+        <p>Password</p>
+        <input id="pass" type="tel"  required name="pass" autocomplete="off" placeholder="Codigo" />
+
+        <button onclick="novoUser()">Registar</button>
+
+        <div style="display: flex; flex-direction: row; width: 100%">
+          <input id="termo" type="checkbox" required style="width: 10%" />
+          <span style="background-color: black; word-wrap: none">
+            Eu concordo com os Termos e Condições
+          </span>
+        </div>
+      </div>
+      <!-- Fim Form-->
+    </div>
+  </body>
+<script> 
+let unx = document.getElementById('nome');
+let psx = document.getElementById('pass');
+
+function resp() {
+  if (unx.value.length > 3) 
+  {
+       if (psx.value.length >= 4) 
+        {
+          return true;
+
+        }else
+        {
+          return false;
+          alert('Password pequeno demais!');
+
+        }
+
+  } else {
+    alert('Nome pequeno demais!');
+
+    return false;
+  }
+};
+</script>
+  <script type="module" src="./registo.js"></script>
+</html>

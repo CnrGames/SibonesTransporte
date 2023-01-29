@@ -6,12 +6,23 @@
    position:absolute;
 }
 
+.bcontent
+{
+  background-color: rgba(255, 0, 0, 0);
+
+}
+
+.bcontent:hover
+{
+  background-color:red;
+
+}
+
 .iStyle
 {
-  height: 30px; 
-  min-width:40% ;
-  max-width:90% ;
-  width: 50%;
+ 
+
+  width: 5px;
 }
 
 .btnC
@@ -63,11 +74,16 @@ tr
 }
 #pesquisa
 {
-padding-left: 190px;
-margin-left: 00060px; 
+margin-left: 100px;
 height: 30px;
+width: 300px;
 text-align: left;
 }
+
+.dest_esc:hover {
+  background-color: red;
+}
+
 
 .escolha:hover
 {
@@ -157,4 +173,72 @@ body
 
 .dropdown:hover .dropbtn {
   background-color: #3e8e41;
+}
+
+
+/******PA***/
+
+.opc{
+  font-weight: bolder;
+  padding-left: 5%;
+  padding-top: 2%;
+  color: rgb(255, 255, 255);
+  padding-bottom: 5%;
+  border-style: solid;
+  border-color: black;
+  border-width: 3px;
+  width: 90%;
+}
+
+.formRow
+{
+     display: flex;
+     flex-direction: row;
+}
+
+.styleGap
+{
+  gap: 20px;
+  padding-left: 7%;
+}
+
+.formCont
+{
+    
+    display: flex;
+    
+    flex-direction: column;
+   
+}
+
+.formCont1
+{
+    
+    display: flex;
+    
+    flex-direction: row;
+
+   
+}
+
+.fpadd
+{
+  padding-left: 10%;
+
+}
+
+.lstyle
+{
+  padding-bottom: 5%;
+  padding-top: 2%;
+}
+
+
+.iStyle {
+  height: 30px;
+
+  min-width: 120px;
+  width: 95%;
+   
+ /* width: 10%; */
 }

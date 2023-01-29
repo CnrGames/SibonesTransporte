@@ -24,7 +24,7 @@ li {
 	--grey: #eee;
 	--dark-grey: #AAAAAA;
 	--dark: #342E37;
-	--red: #DB504A;
+	/*--red: #DB504A;*/
 	--yellow: #FFCE26;
 	--light-yellow: #FFF2C6;
 	--orange: #FD7238;
@@ -54,7 +54,7 @@ body {
 	height: 100%;
 	background: var(--light);
 	z-index: 2000;
-	font-family: var(--lato);
+	/*font-family: var(--lato);*/
 	transition: .3s ease;
 	overflow-x: hidden;
 	scrollbar-width: none;
@@ -201,7 +201,7 @@ section #contents{
 .place-1 span{
  text-transform: uppercase;
  padding: 1rem;
- border-bottom: 2px solid #DB504A
+ border-bottom: 2px solid #ff02f2
 }
 /*
 .place-1 button{
@@ -231,7 +231,7 @@ section #contents{
 }
 
 div .p{
- border:5px dotted var(--red);
+ /*border:5px dotted var(--red);*/
  height: 65vh;
 }
 .download:hover{
@@ -243,7 +243,7 @@ div .p{
 
 .btx:hover
 {
-	background-color: red;
+	background-color: rgb(206, 245, 8) !important;
 }
 
 .img{
