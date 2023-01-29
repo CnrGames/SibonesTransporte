@@ -132,7 +132,7 @@ function resp() {
   if (tidx.value.length > 0) {
     return true;
   } else {
-    alert('Escolha Tipo de documento!!!!');
+    alert('Escolha Categoria de Bilhete!!!!');
 
     return false;
   }

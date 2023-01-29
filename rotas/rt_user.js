@@ -68,14 +68,14 @@ function sutra(extMsg, extExpress, urlParser) {
   //Imprimir
   rt.get('/recibo', urlParser, (req, res, next) => {
     let img1 = '';
-    if (req.app.locals.user != null && req.app.locals.valorp != undefined) {
+    if (req.app.locals.user != undefined) {
       let qrImg = qrcode.toDataURL(
         `Compra do Bilhete para ${req.app.locals.destinop},efectuado com exito `,
         function (err, url) {
           img1 = url;
 
           let conta = mitemer.exTemer(
-            req.app.locals.user,
+            req.app.locals.user.nome,
             '30-01-2023',
             req.app.locals.valorp,
             req.app.locals.destinop,
@@ -158,43 +158,48 @@ function sutra(extMsg, extExpress, urlParser) {
     let lta = [];
     let nemp = req.app.locals.user;
     let dCateg = docQF(req.body.categ);
+    if (req.app.locals.user != undefined) {
+      if (docR.length > 0) {
+        docR.length = 0;
+        console.log('--------Brunox-----------');
+        console.log(macD);
+        req.ddb
+          .collection('Bilhetes')
+          .find(macD)
+          .sort({ destino: 1 })
+          .collation({ locale: 'en', caseLevel: true })
+          .forEach((d) => {
+            docR.push(d);
+          });
+      }
 
-    if (docR.length > 0) {
-      docR.length = 0;
-      console.log('--------Brunox-----------');
-      console.log(macD);
-      req.ddb
+      req.db
         .collection('Bilhetes')
-        .find(macD)
+        .find({ b_restante: { $gt: 0 } })
         .sort({ destino: 1 })
-        .collation({ locale: 'en', caseLevel: true })
-        .forEach((d) => {
-          docR.push(d);
+        .forEach((cs) => lta.push(cs))
+        .then(() => {
+          //----------------------------------------------
+          res.render('user', {
+            natax: nemp.nome, //userName.nome,
+            ps: req.body.pesq,
+            pss: req.app.locals.user.pass,
+
+            ctg: dCateg,
+            tidx: tidxI,
+            docs: docR,
+            emid: req.body.cdI,
+          });
+
+          res.status(200);
+        })
+
+        .catch(() => {
+          res.status(500).json({ err: 'could not fetch Data' });
         });
+    } else {
+      res.redirect('/login');
     }
-
-    req.db
-      .collection('Bilhetes')
-      .find({ b_restante: { $gt: 0 } })
-      .sort({ destino: 1 })
-      .forEach((cs) => lta.push(cs))
-      .then(() => {
-        //----------------------------------------------
-        res.render('user', {
-          natax: nemp.nome, //userName.nome,
-          ps: req.body.pesq,
-          ctg: dCateg,
-          tidx: tidxI,
-          docs: docR,
-          emid: req.body.cdI,
-        });
-
-        res.status(200);
-      })
-
-      .catch(() => {
-        res.status(500).json({ err: 'could not fetch Data' });
-      });
   });
 
   rt.post('/user', urlParser, (req, res) => {
@@ -264,6 +269,7 @@ function sutra(extMsg, extExpress, urlParser) {
           res.render('user', {
             natax: nemp.nome, //userName.nome,
             ps: req.body.pesq,
+            pss: req.app.locals.user.pass,
             tidx: tidxI,
             ctg: req.body.categ,
             docs: docR,
