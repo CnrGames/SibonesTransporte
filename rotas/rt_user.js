@@ -1,8 +1,6 @@
 const rt = require('express').Router();
 const { ObjectId } = require('mongodb');
-const pdfServ = require('./pdfk');
-const PDFDocument = require('pdfkit');
-const PDFKitHTML = require('@shipper/pdfkit-html-simple');
+
 pdf = require('express-pdf');
 const qrcode = require('qrcode');
 
