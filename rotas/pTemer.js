@@ -1,4 +1,4 @@
-function exTemer(nome, data, preco, destino, imagem) {
+function exTemer(nome, data, preco, destino, imagem, cod) {
   let = temry =
     `<!DOCTYPE html>
 <html>
@@ -125,7 +125,7 @@ function exTemer(nome, data, preco, destino, imagem) {
                 </td>
 
                 <td>
-                  Fatura #: 123
+                  Fatura #:A1${cod}
 
                   <div id="dataExpira">Criado: ${data}</div>
 

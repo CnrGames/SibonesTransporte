@@ -68,28 +68,34 @@ function sutra(extMsg, extExpress, urlParser) {
   //Imprimir
   rt.get('/recibo', urlParser, (req, res, next) => {
     let img1 = '';
-    if (req.app.locals.user != undefined) {
-      let qrImg = qrcode.toDataURL(
-        `Compra do Bilhete para ${req.app.locals.destinop},efectuado com exito `,
-        function (err, url) {
-          img1 = url;
+    let msx = 'isctem'.charCodeAt(0) + 'isctem'.charCodeAt(1);
+    console.log(msx);
+    let nm = req.app.locals.user.nome;
+    let tr = req.app.locals.destinop;
+    let cod =
+      nm.charCodeAt(0) +
+      nm.charCodeAt(1) +
+      req.app.locals.valorp +
+      tr.substring(tr.length - 2);
+    let qrImg = qrcode.toDataURL(
+      `Compra do Bilhete para ${req.app.locals.destinop},efectuado com exito `,
+      function (err, url) {
+        img1 = url;
 
-          let conta = mitemer.exTemer(
-            req.app.locals.user.nome,
-            '30-01-2023',
-            req.app.locals.valorp,
-            req.app.locals.destinop,
-            url
-          );
-          res.pdfFromHTML({
-            filename: 'generated.pdf',
-            htmlContent: conta,
-          });
-        }
-      );
-    } else {
-      res.redirect('/user');
-    }
+        let conta = mitemer.exTemer(
+          req.app.locals.user.nome,
+          '30-01-2023',
+          req.app.locals.valorp,
+          req.app.locals.destinop,
+          url,
+          cod
+        );
+        res.pdfFromHTML({
+          filename: 'generated.pdf',
+          htmlContent: conta,
+        });
+      }
+    );
 
     /*
     req.app.locals.datap = listar[0].data;

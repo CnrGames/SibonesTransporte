@@ -36,9 +36,15 @@
       console.log(lg);
       var vai = false;
       let em = document.getElementById('cEm');
-      let npass = true;
+      let Nmpass = false;
+      let Pspass = false;
       function entrar() {
         let valEm;
+
+        Nmpass = false;
+        go = false;
+        Pspass = false;
+
         if (lg.value.length > 0) {
           let go = false;
           for (let x = 0; x < sd.length; x++) {
@@ -48,18 +54,37 @@
             if (vl === enoma) {
               valEm = el;
               console.log(el);
-              go = true;
+              // go = true;
             }
+          }
+
+          sd.forEach((el, i) => {
+            if (lg.value.toLowerCase() == el.nome.toLowerCase()) {
+              Nmpass = true;
+            }
+
+            if (passF.value == el.pass) {
+              Pspass = true;
+            }
+          });
+
+          if (Nmpass == true && Pspass == true) {
+            go = true;
+            console.log('Vdd: ' + Nmpass + Pspass);
+          } else {
+            console.log('ERr: ' + Nmpass + Pspass);
+
+            go = false;
           }
 
           if (go == true) {
             console.log('Valooor: ' + valEm.nome);
             em.value = valEm.nome;
-            vai = go;
+            //vai = go;
 
             //alert('entra');
           } else {
-            vai = go;
+            //vai = go;
             alert('Dado invalido!');
           }
         } else {
@@ -69,21 +94,17 @@
       }
 
       function resp() {
-        olem.array.forEach((el, i) => {
-          if (passF.value == el.pass) {
-            npass = false;
-          }
-        });
-
-        if (lg.value.length > 0 && em.value.length > 0) {
-          if (vai == true) {
-            if (go == true) {
-              if (npass == true) {
-                alert('Codigo invalido!');
-                return !npass;
-              } else {
-                return !npass;
-              }
+        if (lg.value.length > 0) {
+          if (Nmpass == false) {
+            alert('Nome Inexistente');
+            return false;
+          } else {
+            if (Pspass == false) {
+              alert('Password incorrecto!');
+              return false;
+            } else {
+              vai = true;
+              return true;
             }
           }
         } else {
