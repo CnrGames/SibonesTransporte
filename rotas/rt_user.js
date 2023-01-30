@@ -91,41 +91,43 @@ function sutra(extMsg, extExpress, urlParser) {
           url,
           '124231#'
         );*/
+
         const invoice = {
           number: 'INV-001',
-          date: '01/01/2023',
-          items: [{ name: 'Item 1', price: 10 }, ,],
-          total: 60,
+          date: '30/01/2023',
+          items: [
+            {
+              name: 'Viagem a ' + req.app.locals.destinop,
+              price: req.app.locals.valorp,
+            },
+          ],
+          total: req.app.locals.valorp,
         };
+
+        const imageUrl = img1;
 
         const doc = new PDFDocument();
         doc.pipe(res);
 
-        const imageUrl = img1;
         doc.image(imageUrl, { fit: [100, 100], align: 'right', valign: 'top' });
         doc.moveDown();
+
         doc.font('Helvetica-Bold').text('Recibo', { underline: true });
         doc.moveDown();
 
-        doc.font('Helvetica').text(`Number: ${cod}`);
-        doc.text(`Date:30/01/2022`);
+        doc.font('Helvetica').text(`Numero: ${invoice.number}`);
+        doc.text(`Date: ${invoice.date}`);
         doc.moveDown();
 
-        doc.font('Helvetica-Bold').text('Items', { underline: true });
+        doc.font('Helvetica-Bold').text('ITEMS', { underline: true });
         doc.moveDown();
-        let cdd = ['asas'];
-        doc.font('Helvetica').text('Nome').table.addRow().text('Preco');
-        cdd.forEach((item) => {
-          doc.table
-            .addRow()
-            .text(req.app.locals.user.nome)
-            .text(req.app.locals.valorp.toString());
+
+        invoice.items.forEach((item) => {
+          doc.text(`${item.name} - $${item.price}`);
         });
 
         doc.moveDown();
-        doc
-          .font('Helvetica-Bold')
-          .text(`Total: ${ireq.app.locals.valorp.toString()}`);
+        doc.font('Helvetica-Bold').text(`Total: $${invoice.total}`);
 
         doc.end();
       }
