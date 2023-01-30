@@ -69,28 +69,15 @@ function sutra(extMsg, extExpress, urlParser) {
   //Imprimir
   rt.get('/recibo', urlParser, (req, res, next) => {
     let img1 = '';
-    let msx = 'isctem'.charCodeAt(0) + 'isctem'.charCodeAt(1);
-    console.log(msx);
-    let nm = req.app.locals.user.nome;
-    let tr = req.app.locals.destinop;
-    let cod =
-      nm.charCodeAt(0) +
-      nm.charCodeAt(1) +
-      req.app.locals.valorp +
-      tr.substring(tr.length - 2);
+    let nm = '';
+    let tr = '';
+    let cod = '121312A#';
     let qrImg = qrcode.toDataURL(
       `Compra do Bilhete para ${req.app.locals.destinop},efectuado com exito `,
       async function (err, url) {
         img1 = url;
 
-        let conta = mitemer.exTemer(
-          req.app.locals.user.nome,
-          '30-01-2023',
-          req.app.locals.valorp,
-          req.app.locals.destinop,
-          url,
-          cod
-        );
+        let conta = mitemer.exTemer(url);
 
         const options = {
           format: 'A4',
