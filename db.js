@@ -4,8 +4,7 @@ let dbCon;
 module.exports = {
   connectToDb: (cb) => {
     MongoClient.connect(
-      /*'mongodb+srv://isctem:isctem@isctemcluster.jwrxodo.mongodb.net/SIbasTpm?retryWrites=true&w=majority'*/
-      'mongodb://localhost:27017/SibasTpm'
+      'mongodb+srv://isctem:isctem@isctemcluster.jwrxodo.mongodb.net/SIbasTpm?retryWrites=true&w=majority'
     )
       .then((client) => {
         dbCon = client.db();
