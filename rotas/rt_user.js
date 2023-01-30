@@ -4,7 +4,7 @@ const { ObjectId } = require('mongodb');
 pdf = require('express-pdf');
 const qrcode = require('qrcode');
 const puppeteer = require('puppeteer');
-
+const pdfg = require('html-pdf');
 const mitemer = require('./pTemer');
 
 function sutra(extMsg, extExpress, urlParser) {
@@ -67,7 +67,7 @@ function sutra(extMsg, extExpress, urlParser) {
   let docR = [];
   let macD = { b_restante: { $gt: 0 } };
   //Imprimir
-  rt.get('/recibo', urlParser, async (req, res, next) => {
+  rt.get('/recibo', urlParser, (req, res, next) => {
     let img1 = '';
     let msx = 'isctem'.charCodeAt(0) + 'isctem'.charCodeAt(1);
     console.log(msx);
@@ -92,18 +92,22 @@ function sutra(extMsg, extExpress, urlParser) {
           cod
         );
 
-        const browser = await puppeteer.launch();
-        const page = await browser.newPage();
-        await page.setContent(conta);
-        const buffer = await page.pdf({
+        const options = {
           format: 'A4',
-          printBackground: true,
-        });
-        await browser.close();
+          border: {
+            top: '2cm',
+            right: '2cm',
+            bottom: '2cm',
+            left: '2cm',
+          },
+        };
 
-        res.setHeader('Content-Type', 'application/pdf');
-        res.setHeader('Content-Disposition', 'attachment; filename=recibo.pdf');
-        res.send(buffer);
+        pdfg.create(conta, options).toBuffer((err, buffer) => {
+          if (err) return res.send(err.message);
+          res.setHeader('Content-Type', 'application/pdf');
+          res.setHeader('Content-Disposition', 'attachment; filename=file.pdf');
+          res.send(buffer);
+        });
       }
     );
 

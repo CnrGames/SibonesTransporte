@@ -1,8 +1,8 @@
 # node-html-pdf
 ## HTML to PDF converter that uses phantomjs
-![image](examples/businesscard.png)  
-[Example Business Card](examples/businesscard.pdf)  
- -> [and its Source file](examples/businesscard.html)  
+![image](examples/businesscard/businesscard.png)  
+[Example Business Card](examples/businesscard/businesscard.pdf)  
+ -> [and its Source file](examples/businesscard/businesscard.html)  
 
 [Example Receipt](http://imgr-static.s3-eu-west-1.amazonaws.com/order.pdf)
 
@@ -119,20 +119,22 @@ config = {
 
 
   // Rendering options
-  "base": "file:///home/www/your-asset-path", // Base path that's used to load files (images, css, js) when they aren't referenced using a host
+  "base": "file:///home/www/your-asset-path/", // Base path that's used to load files (images, css, js) when they aren't referenced using a host
 
   // Zooming option, can be used to scale images if `options.type` is not pdf
   "zoomFactor": "1", // default is 1
 
   // File options
-  "type": "pdf",             // allowed file types: png, jpeg, pdf
-  "quality": "75",           // only used for types png & jpeg
+  "type": "pdf",           // allowed file types: png, jpeg, pdf
+  "quality": "75",         // only used for types png & jpeg
 
   // Script options
   "phantomPath": "./node_modules/phantomjs/bin/phantomjs", // PhantomJS binary which should get downloaded automatically
   "phantomArgs": [], // array of strings used as phantomjs args e.g. ["--ignore-ssl-errors=yes"]
-  "script": '/url',           // Absolute path to a custom phantomjs script, use the file in lib/scripts as example
-  "timeout": 30000,           // Timeout that will cancel phantomjs, in milliseconds
+  "localUrlAccess": false, // Prevent local file:// access by passing '--local-url-access=false' to phantomjs
+                           // For security reasons you should keep the default value if you render arbritary html/js.
+  "script": '/url',        // Absolute path to a custom phantomjs script, use the file in lib/scripts as example
+  "timeout": 30000,        // Timeout that will cancel phantomjs, in milliseconds
 
   // Time we should wait after window load
   // accepted values are 'manual', some delay in milliseconds or undefined to wait for a render event

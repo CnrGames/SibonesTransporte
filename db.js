@@ -1,6 +1,6 @@
 const { MongoClient } = require('mongodb');
 let dbCon;
-
+/** "mongodb://localhost:27017/SibasTpm" */
 module.exports = {
   connectToDb: (cb) => {
     MongoClient.connect(
