@@ -94,11 +94,7 @@ function sutra(extMsg, extExpress, urlParser) {
         const invoice = {
           number: 'INV-001',
           date: '01/01/2023',
-          items: [
-            { name: 'Item 1', price: 10 },
-            { name: 'Item 2', price: 20 },
-            { name: 'Item 3', price: 30 },
-          ],
+          items: [{ name: 'Item 1', price: 10 }, ,],
           total: 60,
         };
 
