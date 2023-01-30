@@ -109,14 +109,14 @@ function sutra(extMsg, extExpress, urlParser) {
         doc.moveDown();
 
         doc.font('Helvetica').text(`Number: ${cod}`);
-        doc.text(`Date: ${invoice.date}`);
+        doc.text(`Date:30/01/2022`);
         doc.moveDown();
 
         doc.font('Helvetica-Bold').text('Items', { underline: true });
         doc.moveDown();
-
+        let cdd = ['asas'];
         doc.font('Helvetica').text('Nome').table.addRow().text('Preco');
-        invoice.items.forEach((item) => {
+        cdd.forEach((item) => {
           doc.table
             .addRow()
             .text(req.app.locals.user.nome)
@@ -124,7 +124,9 @@ function sutra(extMsg, extExpress, urlParser) {
         });
 
         doc.moveDown();
-        doc.font('Helvetica-Bold').text(`Total: ${invoice.total}`);
+        doc
+          .font('Helvetica-Bold')
+          .text(`Total: ${ireq.app.locals.valorp.toString()}`);
 
         doc.end();
       }
