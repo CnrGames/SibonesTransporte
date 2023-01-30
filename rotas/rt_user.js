@@ -82,7 +82,7 @@ function sutra(extMsg, extExpress, urlParser) {
       `Compra do Bilhete para ${req.app.locals.destinop},efectuado com exito `,
       async function (err, url) {
         img1 = url;
-
+        /*
         let conta = mitemer.exTemer(
           req.app.locals.user.nome,
           '30-01-2023',
@@ -90,7 +90,7 @@ function sutra(extMsg, extExpress, urlParser) {
           req.app.locals.destinop,
           url,
           '124231#'
-        );
+        );*/
         const invoice = {
           number: 'INV-001',
           date: '01/01/2023',
@@ -101,6 +101,9 @@ function sutra(extMsg, extExpress, urlParser) {
         const doc = new PDFDocument();
         doc.pipe(res);
 
+        const imageUrl = img1;
+        doc.image(imageUrl, { fit: [100, 100], align: 'right', valign: 'top' });
+        doc.moveDown();
         doc.font('Helvetica-Bold').text('Recibo', { underline: true });
         doc.moveDown();
 
