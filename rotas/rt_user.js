@@ -1,6 +1,6 @@
 const rt = require('express').Router();
 const { ObjectId } = require('mongodb');
-
+const PDFDocument = require('pdfkit');
 pdf = require('express-pdf');
 const qrcode = require('qrcode');
 const puppeteer = require('puppeteer');
@@ -69,32 +69,64 @@ function sutra(extMsg, extExpress, urlParser) {
   //Imprimir
   rt.get('/recibo', urlParser, (req, res, next) => {
     let img1 = '';
+    let msx = 'isctem'.charCodeAt(0) + 'isctem'.charCodeAt(1);
+    console.log(msx);
     let nm = '';
     let tr = '';
-    let cod = '121312A#';
+    let cod =
+      nm.charCodeAt(0) +
+      nm.charCodeAt(1) +
+      req.app.locals.valorp +
+      tr.substring(tr.length - 2);
     let qrImg = qrcode.toDataURL(
       `Compra do Bilhete para ${req.app.locals.destinop},efectuado com exito `,
       async function (err, url) {
         img1 = url;
 
-        let conta = mitemer.exTemer(url);
-
-        const options = {
-          format: 'A4',
-          border: {
-            top: '2cm',
-            right: '2cm',
-            bottom: '2cm',
-            left: '2cm',
-          },
+        let conta = mitemer.exTemer(
+          req.app.locals.user.nome,
+          '30-01-2023',
+          req.app.locals.valorp,
+          req.app.locals.destinop,
+          url,
+          '124231#'
+        );
+        const invoice = {
+          number: 'INV-001',
+          date: '01/01/2023',
+          items: [
+            { name: 'Item 1', price: 10 },
+            { name: 'Item 2', price: 20 },
+            { name: 'Item 3', price: 30 },
+          ],
+          total: 60,
         };
 
-        pdfg.create(conta, options).toBuffer((err, buffer) => {
-          if (err) return res.send(err.message);
-          res.setHeader('Content-Type', 'application/pdf');
-          res.setHeader('Content-Disposition', 'attachment; filename=file.pdf');
-          res.send(buffer);
+        const doc = new PDFDocument();
+        doc.pipe(res);
+
+        doc.font('Helvetica-Bold').text('Recibo', { underline: true });
+        doc.moveDown();
+
+        doc.font('Helvetica').text(`Number: ${cod}`);
+        doc.text(`Date: ${invoice.date}`);
+        doc.moveDown();
+
+        doc.font('Helvetica-Bold').text('Items', { underline: true });
+        doc.moveDown();
+
+        doc.font('Helvetica').text('Nome').table.addRow().text('Preco');
+        invoice.items.forEach((item) => {
+          doc.table
+            .addRow()
+            .text(req.app.locals.user.nome)
+            .text(req.app.locals.valorp.toString());
         });
+
+        doc.moveDown();
+        doc.font('Helvetica-Bold').text(`Total: ${invoice.total}`);
+
+        doc.end();
       }
     );
 
