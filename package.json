@@ -20,6 +20,8 @@
     "html-pdf": "^3.0.1",
     "mongodb": "^4.8.1",
     "pdf-creator-node": "^2.3.5",
+    "pdfkit": "^0.13.0",
+    "phantomjs-prebuilt": "^2.1.16",
     "puppeteer": "^19.6.2",
     "qrcode": "^1.5.1"
   },
