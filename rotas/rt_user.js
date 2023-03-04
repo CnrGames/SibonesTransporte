@@ -1,12 +1,8 @@
 const rt = require('express').Router();
 const { ObjectId } = require('mongodb');
-const PDFDocument = require('pdfkit');
-pdf = require('express-pdf');
 const qrcode = require('qrcode');
-const puppeteer = require('puppeteer');
-const pdfg = require('html-pdf');
 const mitemer = require('./pTemer');
-
+const html_to_pdf = require('html-pdf-node');
 function sutra(extMsg, extExpress, urlParser) {
   //console.log(ak,az.locals.usa);
 
@@ -67,78 +63,14 @@ function sutra(extMsg, extExpress, urlParser) {
   let docR = [];
   let macD = { b_restante: { $gt: 0 } };
   //Imprimir
-  rt.get('/recibo', urlParser, (req, res, next) => {
-    let img1 = '';
-    let msx = 'isctem'.charCodeAt(0) + 'isctem'.charCodeAt(1);
-    console.log(msx);
-    let nm = '';
-    let tr = '';
-    let cod =
-      nm.charCodeAt(0) +
-      nm.charCodeAt(1) +
-      req.app.locals.valorp +
-      tr.substring(tr.length - 2);
-    let qrImg = qrcode.toDataURL(
-      `Compra do Bilhete para ${req.app.locals.destinop},efectuado com exito `,
-      async function (err, url) {
-        img1 = url;
-        /*
-        let conta = mitemer.exTemer(
-          req.app.locals.user.nome,
-          '30-01-2023',
-          req.app.locals.valorp,
-          req.app.locals.destinop,
-          url,
-          '124231#'
-        );*/
+  rt.get('/recibo', urlParser, async (req, res, next) => {
 
-        const invoice = {
-          number: 'INV-001',
-          date: '30/01/2023',
-          items: [
-            {
-              name: 'Viagem a ' + req.app.locals.destinop,
-              price: req.app.locals.valorp,
-            },
-          ],
-          total: req.app.locals.valorp,
-        };
+    const html = '<h1>Hello,Dynasty World! </h1>';
+    const pdf = await html_to_pdf.generatePdf(html);
+    res.set('Content-Type', 'application/pdf');
+    res.set('Content-Disposition', 'attachment; filename=hello.pdf');
+    res.send(pdf);
 
-        const imageUrl = img1;
-
-        const doc = new PDFDocument();
-        doc.pipe(res);
-
-        doc.image(imageUrl, { fit: [100, 100], align: 'right', valign: 'top' });
-        doc.moveDown();
-
-        doc.font('Helvetica-Bold').text('Recibo', { underline: true });
-        doc.moveDown();
-
-        doc.font('Helvetica').text(`Numero: ${invoice.number}`);
-        doc.text(`Date: ${invoice.date}`);
-        doc.moveDown();
-
-        doc.font('Helvetica-Bold').text('ITEMS', { underline: true });
-        doc.moveDown();
-
-        invoice.items.forEach((item) => {
-          doc.text(`${item.name} - $${item.price}`);
-        });
-
-        doc.moveDown();
-        doc.font('Helvetica-Bold').text(`Total: $${invoice.total}`);
-
-        doc.end();
-      }
-    );
-
-    /*
-    req.app.locals.datap = listar[0].data;
-    req.app.locals.destinop = listar[0].destino;
-    req.app.locals.valorp = listar[0].valor;
-    req.app.locals.nomep = 'Avatar';
-    */
   });
 
   rt.get('/init', urlParser, (req, res, next) => {
