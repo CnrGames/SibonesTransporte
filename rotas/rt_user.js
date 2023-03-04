@@ -13,7 +13,7 @@ function sutra(extMsg, extExpress, urlParser) {
   //Find Data
 
   function fecthar(res, req, next) {
-    console.log('oi');
+    console.log('oila');
     return 'nada';
   }
   let tlscrn = '';
