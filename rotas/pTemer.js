@@ -121,7 +121,7 @@ function exTemer(imagem) {
 
                 <td>
                   Fatura #:A1#73746JF
-
+ 
                   <div id="dataExpira">Criado: 30/01/2023</div>
 
                 </td>
