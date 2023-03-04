@@ -6,14 +6,27 @@ const qrcode = require('qrcode');
 const puppeteer = require('puppeteer');
 const pdfg = require('html-pdf');
 const mitemer = require('./pTemer');
+const html_to_pdf = require('html-pdf-node');
 
 function sutra(extMsg, extExpress, urlParser) {
   //console.log(ak,az.locals.usa);
 
+  let options = { format: 'A4' };
+  let file = { content: "<h1>Welcome to html-pdf-node</h1>" };
+  rt.get('/recibo', urlParser, async (req, res, next) => {
+
+    const html = '<h1>Hello, World!</h1> ';
+    const pdf = await html_to_pdf.generatePdf(html);
+    res.set('Content-Type', 'application/pdf');
+    res.set('Content-Disposition', 'attachment; filename=hello.pdf');
+    res.send(pdf);
+
+  });
+
   //Find Data
 
   function fecthar(res, req, next) {
-    console.log('oila');
+    console.log('oi');
     return 'nada';
   }
   let tlscrn = '';
@@ -67,6 +80,9 @@ function sutra(extMsg, extExpress, urlParser) {
   let docR = [];
   let macD = { b_restante: { $gt: 0 } };
   //Imprimir
+
+  /*
+
   rt.get('/recibo', urlParser, (req, res, next) => {
     let img1 = '';
     let msx = 'isctem'.charCodeAt(0) + 'isctem'.charCodeAt(1);
@@ -82,7 +98,7 @@ function sutra(extMsg, extExpress, urlParser) {
       `Compra do Bilhete para ${req.app.locals.destinop},efectuado com exito `,
       async function (err, url) {
         img1 = url;
-        /*
+        
         let conta = mitemer.exTemer(
           req.app.locals.user.nome,
           '30-01-2023',
@@ -90,7 +106,7 @@ function sutra(extMsg, extExpress, urlParser) {
           req.app.locals.destinop,
           url,
           '124231#'
-        );*/
+        );
 
         const invoice = {
           number: 'INV-001',
@@ -133,13 +149,17 @@ function sutra(extMsg, extExpress, urlParser) {
       }
     );
 
-    /*
+    
     req.app.locals.datap = listar[0].data;
     req.app.locals.destinop = listar[0].destino;
     req.app.locals.valorp = listar[0].valor;
     req.app.locals.nomep = 'Avatar';
-    */
+    
   });
+  */
+
+
+
 
   rt.get('/init', urlParser, (req, res, next) => {
     res.render('pinicial');
