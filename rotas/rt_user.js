@@ -3,6 +3,10 @@ const { ObjectId } = require('mongodb');
 const qrcode = require('qrcode');
 const mitemer = require('./pTemer');
 const html_to_pdf = require('html-pdf-node');
+const { Readable } = require('stream');
+
+
+
 function sutra(extMsg, extExpress, urlParser) {
   //console.log(ak,az.locals.usa);
 
@@ -65,11 +69,27 @@ function sutra(extMsg, extExpress, urlParser) {
   //Imprimir
   rt.get('/recibo', urlParser, async (req, res, next) => {
 
-    const html = '<h1>Hello,Dynasty World! </h1>';
-    const pdf = await html_to_pdf.generatePdf(html);
-    res.set('Content-Type', 'application/pdf');
-    res.set('Content-Disposition', 'attachment; filename=hello.pdf');
-    res.send(pdf);
+
+    let options = { format: 'A4' };
+
+    let file = { content: "<h1>Welcome to html-pdf-node Cnr</h1>" };
+
+
+
+    html_to_pdf.generatePdf(file, options).then(pdfBuffer => {
+      console.log("PDF Buffer:-", pdfBuffer);
+
+      const data = pdfBuffer;
+      const stream = new Readable();
+      stream.push(data);
+      stream.push(null);
+      res.set({
+        'Content-Type': 'text/plain',
+        'Content-Disposition': 'attachment; filename="hello.pdf"'
+      });
+      stream.pipe(res);
+
+    });
 
   });
 
