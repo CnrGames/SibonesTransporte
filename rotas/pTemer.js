@@ -112,10 +112,7 @@ function exTemer(imagem) {
                 <td class="title">
                  ` +
     ` 
-                 <img
-                    src="${imagem}"
-                    style="width: 50%; max-width: 200px"
-                  />
+                
 
                 </td>
 

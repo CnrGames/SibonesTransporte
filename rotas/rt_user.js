@@ -72,7 +72,7 @@ function sutra(extMsg, extExpress, urlParser) {
 
     let options = { format: 'A4' };
 
-    let file = { content: "<h1>Welcome to html-pdf-node Cnr</h1>" };
+    let file = { content: mitemer.exTemer() };
 
 
 
@@ -85,7 +85,7 @@ function sutra(extMsg, extExpress, urlParser) {
       stream.push(null);
       res.set({
         'Content-Type': 'text/plain',
-        'Content-Disposition': 'attachment; filename="hello.pdf"'
+        'Content-Disposition': 'attachment; filename="recibox.pdf"'
       });
       stream.pipe(res);
 
